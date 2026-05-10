@@ -1,4 +1,4 @@
 User-agent: *
 Allow: /
 
-Sitemap: https://elitetoolshub.com/sitemap.xml
+Sitemap: https://elitetoolshub.netlify.app/sitemap.xml
