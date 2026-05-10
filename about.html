@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en" class="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>About Us - Elite Tools Hub</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Outfit:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="css/style.css">
+    <style>
+        body {
+            overflow: auto; /* Allow scrolling on this page */
+            height: auto;
+        }
+        .legal-container {
+            max-width: 800px;
+            margin: 40px auto;
+            padding: 40px;
+            background-color: var(--bg-card);
+            border: 1px solid var(--border-color);
+            border-radius: var(--radius-xl);
+            box-shadow: var(--shadow-md);
+        }
+        .legal-container h1, .legal-container h2, .legal-container h3 {
+            background: linear-gradient(to right, var(--primary), var(--secondary));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 24px;
+        }
+        .legal-container h1 { font-size: 2.5rem; }
+        .legal-container h2 { font-size: 1.8rem; margin-top: 32px; }
+        .legal-container h3 { font-size: 1.6rem; margin-top: 24px; }
+        
+        .legal-container p, .legal-container ul {
+            margin-bottom: 16px;
+            color: var(--text-secondary);
+            line-height: 1.6;
+        }
+        .legal-container ul {
+            padding-left: 20px;
+        }
+        .legal-container li {
+            margin-bottom: 8px;
+        }
+        .legal-container a {
+            color: var(--primary);
+            text-decoration: none;
+        }
+        .legal-container a:hover {
+            text-decoration: underline;
+        }
+        .back-link {
+            display: inline-block;
+            margin-bottom: 30px;
+            color: var(--primary);
+            text-decoration: none;
+            font-weight: 500;
+            padding: 8px 16px;
+            background-color: var(--bg-card-hover);
+            border-radius: var(--radius-md);
+            transition: var(--transition);
+        }
+        .back-link:hover {
+            background-color: var(--border-color);
+        }
+        .legal-container strong, .legal-container b {
+            color: var(--text-primary);
+        }
+    </style>
+</head>
+<body>
+    <div style="padding: 20px;">
+        <div class="legal-container">
+            <a href="index.html" class="back-link">&larr; Back to Home</a>
+            
+            <h1>About Us</h1>
+            <h3>Welcome to Elite Tools Hub</h3>
+            <p>Hello! <strong>Elite Tools Hub</strong> is a professional platform where we provide interesting and valuable content focused on <strong>Tools</strong>. 
+            We are committed to delivering high-quality, reliable, and insightful information. Our goal is to turn our passion for Tools into a thriving online resource.</p>
+
+            <p>We will continue to post such valuable and knowledgeable information on our website for all of you. Your love and support mean a lot to us.</p>
+
+            <p>We are dedicated to providing you with the very best insights and knowledge related to Tools. Our About Us page is generated with the help of the
+            <a href="https://saasraptor.com/about-us-generator/" style="color: #fcb600;">About Us Generator</a>.</p>
+
+            <p>We hope you find all of the information on <strong>Elite Tools Hub</strong> helpful, as we love sharing it with you.</p>
+
+            <p><strong>Visit us at:</strong> <a href="https://elitetoolshub.netlify.app" target="_blank">https://elitetoolshub.netlify.app</a></p>
+            <p><strong>For any inquiries or further information, please feel free to contact us via email at:</strong> <a href="mailto:elitetoolshub@gmail.com">elitetoolshub@gmail.com</a></p>
+
+            <p><strong>Thank you for visiting Elite Tools Hub!</strong></p>
+        </div>
+    </div>
+
+    <!-- Script to maintain theme preference -->
+    <script>
+        const savedTheme = localStorage.getItem('theme') || localStorage.getItem('elite_theme');
+        if (savedTheme === 'light') {
+            document.documentElement.classList.remove('dark');
+        } else {
+            document.documentElement.classList.add('dark');
+        }
+    </script>
+</body>
+</html>
