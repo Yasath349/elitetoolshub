@@ -165,20 +165,50 @@
                 <input type="password" id="geminiKey" class="form-control" placeholder="Enter Gemini Key..." style="margin-top:8px;">
                 <p style="font-size:0.7rem; color:var(--text-3); margin-top:6px;">Stored locally in your browser. <a href="https://aistudio.google.com/app/apikey" target="_blank" style="color:var(--primary);">Get Gemini Key</a></p>
             </div>
-            <button class="btn-primary" onclick="saveAISettings()" style="width:100%;">Save AI Settings</button>
+            <div style="display:flex; gap:10px;">
+                <button class="btn-primary" onclick="saveAISettings()" style="flex:1;">Save Key</button>
+                <button class="btn-secondary" id="testAI" onclick="testAIConnection()" style="flex:1;">Test Connection</button>
+            </div>
         </div>
     </div>
 </div>
 
 <script>
     function saveAISettings() {
-        const key = document.getElementById('geminiKey').value;
+        const key = document.getElementById('geminiKey').value.trim();
         if(key) {
             localStorage.setItem('elite_gemini_key', key);
             alert("Google Gemini API Key saved successfully!");
             window.location.reload();
+        } else {
+            alert("Please enter a valid key.");
         }
     }
+
+    async function testAIConnection() {
+        const key = document.getElementById('geminiKey').value.trim();
+        const btn = document.getElementById('testAI');
+        if(!key) { alert("Enter key first!"); return; }
+        
+        btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Testing...';
+        try {
+            const res = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${key}`, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ contents: [{ parts: [{ text: "hi" }] }] })
+            });
+            const data = await res.json();
+            if(data.candidates) {
+                alert("✅ Success! Your Gemini API Key is working perfectly.");
+            } else {
+                alert("❌ Failed: " + (data.error ? data.error.message : "Invalid response"));
+            }
+        } catch(e) {
+            alert("❌ Connection Error: Check your internet and key.");
+        }
+        btn.innerHTML = "Test Connection";
+    }
+
     // Load existing key
     document.addEventListener('DOMContentLoaded', () => {
         const k = localStorage.getItem('elite_gemini_key');

@@ -8,7 +8,6 @@ const callGemini = async (prompt, systemPrompt = "You are a helpful AI assistant
     }
 
     try {
-        // Gemini API uses a system instruction and user content structure
         const response = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${apiKey}`, {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
@@ -18,17 +17,26 @@ const callGemini = async (prompt, systemPrompt = "You are a helpful AI assistant
                 }]
             })
         });
+        
         const data = await response.json();
         
         if (data.error) {
-            console.error(data.error);
-            return "Error: " + data.error.message;
+            return `🚨 API Error: ${data.error.message} (${data.error.status})`;
         }
 
-        return data.candidates[0].content.parts[0].text;
+        if (!data.candidates || data.candidates.length === 0) {
+            return "⚠️ AI Response blocked by safety filters. Please try a different prompt.";
+        }
+
+        const candidate = data.candidates[0];
+        if (candidate.finishReason === "SAFETY") {
+            return "⚠️ Response blocked due to safety concerns.";
+        }
+
+        return candidate.content.parts[0].text;
     } catch(e) {
-        console.error(e);
-        return "Error connecting to Gemini API. Please check your key and connection.";
+        console.error("Gemini Fetch Error:", e);
+        return "❌ Connection Failed. Please ensure your API key is valid and you have an active internet connection.";
     }
 };
 
