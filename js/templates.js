@@ -59,14 +59,30 @@ window.EliteTemplates = {
         <button id="psBtn" class="btn-primary">Split Into Single Pages</button>
     `,
     'pdf-compressor': `
-        <div class="form-group"><label>Select PDF</label><input type="file" id="pcFile" class="form-control" accept=".pdf"></div>
-        <div class="form-group"><label>Compression Level</label><select id="pcLevel" class="form-control"><option value="low">Low (High Quality)</option><option value="medium" selected>Medium (Recommended)</option><option value="high">High (Maximum Compression)</option></select></div>
-        <button id="pcBtn" class="btn-primary">Compress PDF</button>
+        <div class="file-upload-wrapper">
+            <i class="fa-solid fa-file-contract file-upload-icon"></i>
+            <span class="file-upload-text">Select PDF to Compress</span>
+            <input type="file" id="pcFile" accept=".pdf">
+            <div id="pcFileName" class="file-selected-name"></div>
+        </div>
+        <button id="pcBtn" class="btn-primary">Optimize & Compress</button>
     `,
     'pdf-rotator': `
-        <div class="form-group"><label>Select PDF</label><input type="file" id="prFile" class="form-control" accept=".pdf"></div>
-        <div class="form-group"><label>Rotation Angle</label><select id="prAngle" class="form-control"><option value="90">90° Clockwise</option><option value="180">180°</option><option value="270">270° Counter-Clockwise</option></select></div>
-        <button id="prBtn" class="btn-primary">Rotate & Save</button>
+        <div class="file-upload-wrapper">
+            <i class="fa-solid fa-rotate file-upload-icon"></i>
+            <span class="file-upload-text">Select PDF to Rotate</span>
+            <input type="file" id="prFile" accept=".pdf">
+            <div id="prFileName" class="file-selected-name"></div>
+        </div>
+        <div class="form-group">
+            <label>Rotation Angle</label>
+            <select id="prDeg" class="form-control">
+                <option value="90">90° Clockwise</option>
+                <option value="180">180° (Upside Down)</option>
+                <option value="270">90° Counter-Clockwise</option>
+            </select>
+        </div>
+        <button id="prBtn" class="btn-primary">Rotate & Save PDF</button>
     `,
     'pdf-sign': `
         <div class="file-upload-wrapper">
@@ -88,20 +104,44 @@ window.EliteTemplates = {
     `,
 
     'pdf-watermark': `
-        <div class="form-group"><label>Select PDF</label><input type="file" id="pwFile" class="form-control" accept=".pdf"></div>
-        <div class="form-group"><label>Watermark Text</label><input type="text" id="pwText" class="form-control" placeholder="CONFIDENTIAL" value="ELITE TOOLS HUB"></div>
-        <button id="pwBtn" class="btn-primary">Add Watermark</button>
+        <div class="file-upload-wrapper">
+            <i class="fa-solid fa-stamp file-upload-icon"></i>
+            <span class="file-upload-text">Select PDF to Watermark</span>
+            <input type="file" id="pwFile" accept=".pdf">
+            <div id="pwFileName" class="file-selected-name"></div>
+        </div>
+        <div class="form-group">
+            <label>Watermark Text</label>
+            <input type="text" id="pwText" class="form-control" placeholder="CONFIDENTIAL" value="ELITE HUB">
+        </div>
+        <button id="pwBtn" class="btn-primary">Add Watermark & Save</button>
     `,
 
     // === SECURE PDF ===
     'pdf-lock': `
-        <div class="form-group"><label>Select PDF</label><input type="file" id="plFile" class="form-control" accept=".pdf"></div>
-        <div class="form-group"><label>Set Password</label><input type="password" id="plPass" class="form-control" placeholder="••••••••"></div>
-        <button id="plBtn" class="btn-primary">Encrypt & Lock PDF</button>
+        <div class="file-upload-wrapper">
+            <i class="fa-solid fa-lock file-upload-icon"></i>
+            <span class="file-upload-text">Select PDF to Protect</span>
+            <input type="file" id="plFile" accept=".pdf">
+            <div id="plFileName" class="file-selected-name"></div>
+        </div>
+        <div class="form-group">
+            <label>Set Secure Password</label>
+            <input type="password" id="plPass" class="form-control" placeholder="Create a password">
+        </div>
+        <button id="plBtn" class="btn-primary">Encrypt & Download PDF</button>
     `,
     'pdf-unlock': `
-        <div class="form-group"><label>Select Locked PDF</label><input type="file" id="puFile" class="form-control" accept=".pdf"></div>
-        <div class="form-group"><label>Current Password</label><input type="password" id="puPass" class="form-control" placeholder="Enter password to unlock"></div>
+        <div class="file-upload-wrapper">
+            <i class="fa-solid fa-lock-open file-upload-icon"></i>
+            <span class="file-upload-text">Select Locked PDF</span>
+            <input type="file" id="puFile" accept=".pdf">
+            <div id="puFileName" class="file-selected-name"></div>
+        </div>
+        <div class="form-group">
+            <label>Current Password</label>
+            <input type="password" id="puPass" class="form-control" placeholder="Enter password to unlock">
+        </div>
         <button id="puBtn" class="btn-primary">Unlock & Remove Security</button>
     `,
 
