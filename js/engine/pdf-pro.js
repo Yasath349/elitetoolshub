@@ -307,20 +307,41 @@ window.EliteToolEngines['pdf-sign'] = {
         const ctx = canvas.getContext('2d');
         let drawing = false;
 
-        const start = (e) => { drawing = true; draw(e); };
-        const end = () => { drawing = false; ctx.beginPath(); };
+        // Sync resolution with CSS size
+        const syncSize = () => {
+            const rect = canvas.getBoundingClientRect();
+            canvas.width = rect.width;
+            canvas.height = rect.height;
+        };
+        syncSize();
+        window.addEventListener('resize', syncSize);
+
+        const getCoords = (e) => {
+            const rect = canvas.getBoundingClientRect();
+            const clientX = e.clientX || (e.touches && e.touches[0].clientX);
+            const clientY = e.clientY || (e.touches && e.touches[0].clientY);
+            return {
+                x: clientX - rect.left,
+                y: clientY - rect.top
+            };
+        };
+
+        const start = (e) => { 
+            drawing = true; 
+            const { x, y } = getCoords(e);
+            ctx.beginPath();
+            ctx.moveTo(x, y);
+        };
+        const end = () => { drawing = false; };
         const draw = (e) => {
             if(!drawing) return;
-            const rect = canvas.getBoundingClientRect();
-            const x = (e.clientX || e.touches[0].clientX) - rect.left;
-            const y = (e.clientY || e.touches[0].clientY) - rect.top;
-            ctx.lineWidth = 2;
+            const { x, y } = getCoords(e);
+            ctx.lineWidth = 2.5;
             ctx.lineCap = 'round';
+            ctx.lineJoin = 'round';
             ctx.strokeStyle = '#000';
             ctx.lineTo(x, y);
             ctx.stroke();
-            ctx.beginPath();
-            ctx.moveTo(x, y);
         };
 
         canvas.onmousedown = start;
