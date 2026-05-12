@@ -35,7 +35,13 @@ body{font-family:'Inter',sans-serif;background:var(--bg-app);color:var(--text-1)
 ::-webkit-scrollbar-track{background:transparent}
 ::-webkit-scrollbar-thumb{background:var(--primary);border-radius:10px}
 
-.app-container{display:flex;flex-direction:column;min-height:100vh}
+.app-container {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+  width: 100%;
+  overflow-x: hidden;
+}
 
 /* ── TOP HEADER ── */
 .top-header{
@@ -575,20 +581,31 @@ select.form-control{cursor:pointer}
   .logo-sub{display:none}
 }
 @media(max-width:600px){
-  .top-header{padding:0 12px;height:56px}
-  .category-nav-wrapper{top:56px}
-  .category-nav{padding:0 8px; height:48px; gap:4px;}
-  .category-nav-wrapper::after, .category-nav-wrapper::before { width: 30px; }
-  .cat-tab{padding:6px 12px; font-size:0.78rem;}
-  .content-area{padding:12px 10px}
-  .tools-grid{grid-template-columns:repeat(2,1fr);gap:8px}
-  .tool-card{padding:16px 12px;}
-  .tool-card h3{font-size:0.85rem}
-  .tool-card p{font-size:0.75rem; display:none;} /* Hide descriptions on mobile to save space */
-  .hero-section{padding:20px 14px; margin-bottom:16px;}
-  .hero-content h2{font-size:1.3rem}
-  .hero-content p{font-size:0.85rem}
-  .hero-stats{display:none} /* Hide stats on small mobile */
-  .tool-workspace{padding:12px}
-  .section-title{font-size:1rem; margin-bottom:15px;}
+  .top-header { padding: 0 10px; height: 56px; gap: 8px; }
+  .logo-sub, .search-kbd, .hero-stats { display: none !important; }
+  .logo-name { font-size: 0.95rem; }
+  .logo-img { width: 34px; height: 34px; }
+  .search-wrap { flex: 1; min-width: 0; }
+  .search-input { padding: 8px 30px 8px 32px; font-size: 0.8rem; border-radius: 12px; }
+  .search-icon { left: 10px; font-size: 0.75rem; }
+  
+  .category-nav-wrapper { top: 56px; }
+  .category-nav { padding: 0 6px; height: 44px; gap: 4px; }
+  .cat-tab { padding: 6px 10px; font-size: 0.75rem; }
+  
+  .content-area { padding: 10px 8px; }
+  .tools-grid { 
+    grid-template-columns: repeat(2, 1fr); 
+    gap: 8px; 
+  }
+  .tool-card { padding: 14px 10px; }
+  .tool-card h3 { font-size: 0.82rem; }
+  .tool-card p { display: none; }
+  
+  .hero-section { padding: 18px 14px; margin-bottom: 12px; border-radius: var(--radius-lg); }
+  .hero-content h2 { font-size: 1.25rem; }
+  .hero-content p { font-size: 0.8rem; }
+  
+  .section-title { font-size: 0.95rem; margin-bottom: 12px; }
+  .tool-workspace { padding: 14px; border-radius: var(--radius-lg); }
 }
