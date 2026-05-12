@@ -1,5 +1,17 @@
 const toolCategories = [
     {
+        id: 'smart-ai',
+        name: 'Smart AI Tools',
+        icon: 'fa-robot',
+        tools: [
+            { id: 'ai-homework', name: 'AI Homework Solver', desc: 'Solve and understand questions instantly.', icon: 'fa-graduation-cap' },
+            { id: 'ai-resume', name: 'AI Resume Builder', desc: 'Create professional resumes for jobs.', icon: 'fa-file-invoice' },
+            { id: 'ai-summary', name: 'AI Summary Gen', desc: 'Turn long text into short summaries.', icon: 'fa-compress' },
+            { id: 'ai-seo', name: 'AI SEO Keywords', desc: 'Find powerful keywords for SEO.', icon: 'fa-magnifying-glass-chart' },
+            { id: 'ai-travel', name: 'AI Travel Planner', desc: 'Create smart travel plans and budgets.', icon: 'fa-plane' }
+        ]
+    },
+    {
         id: 'pdf-suite',
         name: 'PDF Pro Suite',
         icon: 'fa-file-pdf',

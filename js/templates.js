@@ -1,4 +1,35 @@
 window.EliteTemplates = {
+    // === SMART AI TOOLS ===
+    'ai-homework': `
+        <div class="form-group"><label>Paste your Question or Subject</label><textarea id="hwInput" class="form-control" style="height:120px;" placeholder="e.g. Solve 2x + 5 = 15 and explain."></textarea></div>
+        <button id="hwBtn" class="btn-primary"><i class="fa-solid fa-wand-magic-sparkles"></i> Solve Instantly</button>
+        <div id="hwLoader" class="loader-ai" style="display:none; margin-top:20px;"></div>
+        <div id="hwResult" style="margin-top:20px; white-space:pre-wrap; background:var(--bg-card); padding:20px; border-radius:10px; border:1px solid var(--border); display:none;"></div>
+    `,
+    'ai-resume': `
+        <div class="form-group"><label>Enter your Career Details</label><textarea id="rsInput" class="form-control" style="height:150px;" placeholder="Name: John Doe\nSkills: Python, React\nExperience: 2 years at TechCorp"></textarea></div>
+        <button id="rsBtn" class="btn-primary"><i class="fa-solid fa-file-invoice"></i> Build Resume Content</button>
+        <div id="rsLoader" class="loader-ai" style="display:none; margin-top:20px;"></div>
+        <div id="rsResult" style="margin-top:20px; white-space:pre-wrap; background:var(--bg-card); padding:20px; border-radius:10px; border:1px solid var(--border); display:none;"></div>
+    `,
+    'ai-summary': `
+        <div class="form-group"><label>Paste long text here</label><textarea id="smInput" class="form-control" style="height:150px;"></textarea></div>
+        <button id="smBtn" class="btn-primary"><i class="fa-solid fa-compress"></i> Generate Summary</button>
+        <div id="smLoader" class="loader-ai" style="display:none; margin-top:20px;"></div>
+        <div id="smResult" style="margin-top:20px; white-space:pre-wrap; background:var(--bg-card); padding:20px; border-radius:10px; border:1px solid var(--border); display:none;"></div>
+    `,
+    'ai-seo': `
+        <div class="form-group"><label>Niche or Topic</label><input type="text" id="seoInput" class="form-control" placeholder="e.g. Sustainable Fashion"></div>
+        <button id="seoBtn" class="btn-primary"><i class="fa-solid fa-magnifying-glass-chart"></i> Find Keywords</button>
+        <div id="seoLoader" class="loader-ai" style="display:none; margin-top:20px;"></div>
+        <div id="seoResult" style="margin-top:20px; white-space:pre-wrap; background:var(--bg-card); padding:20px; border-radius:10px; border:1px solid var(--border); display:none;"></div>
+    `,
+    'ai-travel': `
+        <div class="form-group"><label>Destination & Duration</label><input type="text" id="trInput" class="form-control" placeholder="e.g. 5 days in Paris, France"></div>
+        <button id="trBtn" class="btn-primary"><i class="fa-solid fa-plane"></i> Plan My Trip</button>
+        <div id="trLoader" class="loader-ai" style="display:none; margin-top:20px;"></div>
+        <div id="trResult" style="margin-top:20px; white-space:pre-wrap; background:var(--bg-card); padding:20px; border-radius:10px; border:1px solid var(--border); display:none;"></div>
+    `,
     // === CONVERT PDF ===
     'pdf-to-word': `
         <div class="file-upload-wrapper">

@@ -159,9 +159,31 @@
             <h4>All Tools Active ✅</h4>
             <p>70+ tools are live and fully operational.</p>
             <small>2 mins ago</small>
+            <div class="form-group" style="margin-bottom:24px;">
+                <label><i class="fa-solid fa-key" style="margin-right:8px; color:var(--primary);"></i> OpenAI API Key</label>
+                <input type="password" id="openaiKey" class="form-control" placeholder="sk-..." style="margin-top:8px;">
+                <p style="font-size:0.7rem; color:var(--text-3); margin-top:6px;">Stored locally in your browser. <a href="https://platform.openai.com/api-keys" target="_blank" style="color:var(--primary);">Get Key</a></p>
+            </div>
+            <button class="btn-primary" onclick="saveAISettings()" style="width:100%;">Save Settings</button>
         </div>
     </div>
 </div>
+
+<script>
+    function saveAISettings() {
+        const key = document.getElementById('openaiKey').value;
+        if(key) {
+            localStorage.setItem('elite_openai_key', key);
+            alert("OpenAI API Key saved successfully!");
+            window.location.reload();
+        }
+    }
+    // Load existing key
+    document.addEventListener('DOMContentLoaded', () => {
+        const k = localStorage.getItem('elite_openai_key');
+        if(k && document.getElementById('openaiKey')) document.getElementById('openaiKey').value = k;
+    });
+</script>
 
 <!-- Scripts -->
 <script src="js/registry.js"></script>
@@ -182,6 +204,7 @@
 <script src="js/engine/design.js"></script>
 <script src="js/engine/mobile.js"></script>
 <script src="js/engine/file-tools.js"></script>
+<script src="js/engine/smart-ai.js"></script>
 <script src="js/engine/pdf-pro.js"></script>
 <script src="js/engine/tools-pack.js"></script>
 <script src="js/engine/viral.js"></script>
