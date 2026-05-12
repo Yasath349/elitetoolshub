@@ -161,28 +161,28 @@
             <p>70+ tools are live and fully operational.</p>
             <small>2 mins ago</small>
             <div class="form-group" style="margin-bottom:24px;">
-                <label><i class="fa-solid fa-key" style="margin-right:8px; color:var(--primary);"></i> OpenAI API Key</label>
-                <input type="password" id="openaiKey" class="form-control" placeholder="sk-..." style="margin-top:8px;">
-                <p style="font-size:0.7rem; color:var(--text-3); margin-top:6px;">Stored locally in your browser. <a href="https://platform.openai.com/api-keys" target="_blank" style="color:var(--primary);">Get Key</a></p>
+                <label><i class="fa-solid fa-wand-magic-sparkles" style="margin-right:8px; color:var(--primary);"></i> Google Gemini API Key</label>
+                <input type="password" id="geminiKey" class="form-control" placeholder="Enter Gemini Key..." style="margin-top:8px;">
+                <p style="font-size:0.7rem; color:var(--text-3); margin-top:6px;">Stored locally in your browser. <a href="https://aistudio.google.com/app/apikey" target="_blank" style="color:var(--primary);">Get Gemini Key</a></p>
             </div>
-            <button class="btn-primary" onclick="saveAISettings()" style="width:100%;">Save Settings</button>
+            <button class="btn-primary" onclick="saveAISettings()" style="width:100%;">Save AI Settings</button>
         </div>
     </div>
 </div>
 
 <script>
     function saveAISettings() {
-        const key = document.getElementById('openaiKey').value;
+        const key = document.getElementById('geminiKey').value;
         if(key) {
-            localStorage.setItem('elite_openai_key', key);
-            alert("OpenAI API Key saved successfully!");
+            localStorage.setItem('elite_gemini_key', key);
+            alert("Google Gemini API Key saved successfully!");
             window.location.reload();
         }
     }
     // Load existing key
     document.addEventListener('DOMContentLoaded', () => {
-        const k = localStorage.getItem('elite_openai_key');
-        if(k && document.getElementById('openaiKey')) document.getElementById('openaiKey').value = k;
+        const k = localStorage.getItem('elite_gemini_key');
+        if(k && document.getElementById('geminiKey')) document.getElementById('geminiKey').value = k;
     });
 </script>
 
