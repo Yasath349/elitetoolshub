@@ -134,9 +134,17 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // Expose loadTool globally for onclick handlers in HTML strings
     window.loadTool = (id) => {
+        if (!id) {
+            renderDashboard();
+            updateActiveNav(null);
+            searchInput.value = '';
+            window.location.hash = '';
+            return;
+        }
         renderTool(id);
         updateActiveNav(id);
         searchInput.value = '';
+        window.location.hash = id;
     };
 
     // --- Render Views ---

@@ -4,15 +4,15 @@ window.EliteToolEngines = window.EliteToolEngines || {};
 // Hashtag Generator
 // ==========================================
 window.EliteToolEngines['hashtag-gen'] = {
-    init: function() {
-        const btn = document.getElementById('htBtn');
-        if(!btn) return;
+    init: function () {
+        const btn = document.getElementById('hgBtn');
+        if (!btn) return;
         btn.onclick = () => {
-            const input = document.getElementById('htInput').value.toLowerCase().replace(/[^a-z0-9]/g, '');
-            if(!input) return;
+            const input = document.getElementById('hgInput').value.toLowerCase().replace(/[^a-z0-9]/g, '');
+            if (!input) return;
             const suffixes = ['life', 'vibes', 'goals', 'mood', 'style', 'daily', 'love', 'art', 'fun', 'pic', 'gram', 'oftheday', 'time'];
-            const tags = ['#'+input];
-            for(let i=0; i<10; i++) {
+            const tags = ['#' + input];
+            for (let i = 0; i < 10; i++) {
                 tags.push('#' + input + suffixes[Math.floor(Math.random() * suffixes.length)]);
             }
             // Add some generic popular ones
@@ -26,12 +26,12 @@ window.EliteToolEngines['hashtag-gen'] = {
 // YT Title Generator
 // ==========================================
 window.EliteToolEngines['yt-title-gen'] = {
-    init: function() {
+    init: function () {
         const btn = document.getElementById('ytBtn');
-        if(!btn) return;
+        if (!btn) return;
         btn.onclick = () => {
             const topic = document.getElementById('ytInput').value;
-            if(!topic) return;
+            if (!topic) return;
             const templates = [
                 `The TRUTH About ${topic} (Must Watch)`,
                 `I Tried ${topic} For 30 Days And This Happened`,

@@ -74,15 +74,17 @@ window.EliteToolEngines['lucky-number'] = {
 
 window.EliteToolEngines['dream-interp'] = {
     init: function() {
-        const btn = document.getElementById('diBtn');
+        const btn = document.getElementById('dreamBtn');
         if(!btn) return;
         btn.onclick = () => {
-            const dream = document.getElementById('diInput').value.toLowerCase();
+            const dream = document.getElementById('dreamInput').value.toLowerCase();
             let interp = "Your dream reflects your subconscious processing recent life events and emotions.";
             if(dream.includes('fall')) interp = "Falling in a dream often suggests a feeling of losing control or anxiety about a situation in your waking life.";
             if(dream.includes('fly')) interp = "Flying typically represents a sense of freedom, breaking boundaries, or looking at things from a new perspective.";
             if(dream.includes('teeth')) interp = "Dreams about teeth falling out are incredibly common and usually represent anxiety about appearance, communication, or a feeling of powerlessness.";
-            document.getElementById('diResult').innerHTML = `<strong>Interpretation:</strong> ${interp}`;
+            if(dream.includes('water')) interp = "Water in dreams symbolizes emotions, the unconscious mind, and the flow of life.";
+            if(dream.includes('snake')) interp = "Snakes often symbolize transformation, hidden fears, or a deceptive person in your life.";
+            document.getElementById('dreamResult').innerHTML = `<strong>Interpretation:</strong> ${interp}`;
         };
     }
 };

@@ -12,34 +12,11 @@ window.EliteToolEngines['basic-calc'] = {
         let current = '0';
         let prev = '';
         let op = null;
+        let justCalculated = false;
 
         const update = () => { display.innerText = current; };
 
-        document.querySelectorAll('.bc-num').forEach(btn => {
-            btn.onclick = () => {
-                if(current === '0' && btn.innerText !== '.') current = btn.innerText;
-                else current += btn.innerText;
-                update();
-            }
-        });
-
-        document.querySelectorAll('.bc-op').forEach(btn => {
-            btn.onclick = () => {
-                if(op !== null) return;
-                prev = current;
-                op = btn.getAttribute('data-op');
-                history.innerText = `${prev} ${op}`;
-                current = '0';
-                update();
-            }
-        });
-
-        document.getElementById('bcDel').onclick = () => {
-            current = current.length > 1 ? current.slice(0, -1) : '0';
-            update();
-        };
-
-        document.getElementById('bcEq').onclick = () => {
+        const compute = () => {
             if(!op || !prev) return;
             const a = parseFloat(prev);
             const b = parseFloat(current);
@@ -47,13 +24,49 @@ window.EliteToolEngines['basic-calc'] = {
             if(op==='+') res = a+b;
             if(op==='-') res = a-b;
             if(op==='*') res = a*b;
-            if(op==='/') res = a/b;
+            if(op==='/') res = b !== 0 ? a/b : 0;
             history.innerText = `${prev} ${op} ${current} =`;
-            current = res.toString();
+            current = parseFloat(res.toPrecision(10)).toString();
             op = null;
             prev = '';
+            justCalculated = true;
             update();
         };
+
+        document.querySelectorAll('.bc-num').forEach(btn => {
+            btn.onclick = () => {
+                if(justCalculated && btn.innerText !== '.') {
+                    current = btn.innerText;
+                    justCalculated = false;
+                } else if(current === '0' && btn.innerText !== '.') {
+                    current = btn.innerText;
+                } else {
+                    current += btn.innerText;
+                }
+                update();
+            };
+        });
+
+        document.querySelectorAll('.bc-op').forEach(btn => {
+            btn.onclick = () => {
+                // If there's a pending op, compute first (chaining)
+                if(op !== null && !justCalculated) compute();
+                prev = current;
+                op = btn.getAttribute('data-op');
+                history.innerText = `${prev} ${op}`;
+                current = '0';
+                justCalculated = false;
+                update();
+            };
+        });
+
+        document.getElementById('bcDel').onclick = () => {
+            if(justCalculated) { current = '0'; justCalculated = false; }
+            else current = current.length > 1 ? current.slice(0, -1) : '0';
+            update();
+        };
+
+        document.getElementById('bcEq').onclick = () => { compute(); };
     }
 };
 

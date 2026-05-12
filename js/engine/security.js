@@ -37,7 +37,7 @@ window.EliteToolEngines['password-gen'] = {
 // ==========================================
 window.EliteToolEngines['password-check'] = {
     init: function() {
-        const input = document.getElementById('pcInput');
+        const input = document.getElementById('pwcInput');
         if(!input) return;
         input.oninput = () => {
             const val = input.value;
@@ -47,8 +47,8 @@ window.EliteToolEngines['password-check'] = {
             if(/[0-9]/.test(val)) strength++;
             if(/[^A-Za-z0-9]/.test(val)) strength++;
             
-            const bar = document.getElementById('pcBar');
-            const res = document.getElementById('pcResult');
+            const bar = document.getElementById('pwcBar');
+            const res = document.getElementById('pwcResult');
             const pct = (strength/4)*100;
             bar.style.width = pct + '%';
             

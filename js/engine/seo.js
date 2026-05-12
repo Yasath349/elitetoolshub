@@ -41,15 +41,15 @@ window.EliteToolEngines['og-preview'] = {
 
 window.EliteToolEngines['robots-gen'] = {
     init: function() {
-        const btn = document.getElementById('rgBtn');
+        const btn = document.getElementById('robotsBtn');
         if(!btn) return;
         btn.onclick = () => {
-            const allow = document.getElementById('rgAllow').value;
-            const sitemap = document.getElementById('rgSitemap').value;
+            const allow = document.getElementById('robotsAllow').value;
+            const sitemap = document.getElementById('robotsSitemap').value;
             let txt = "User-agent: *\n";
             txt += allow === 'yes' ? "Allow: /\n" : "Disallow: /\n";
             if(sitemap) txt += `\nSitemap: ${sitemap}\n`;
-            document.getElementById('rgResult').value = txt;
+            document.getElementById('robotsResult').value = txt;
         };
     }
 };

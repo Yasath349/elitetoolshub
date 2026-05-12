@@ -50,18 +50,18 @@ window.EliteToolEngines['ringtone-cutter'] = {
 
 window.EliteToolEngines['call-duration'] = {
     init: function() {
-        const btn = document.getElementById('cdBtn');
+        const btn = document.getElementById('cdCallBtn');
         if(!btn) return;
         btn.onclick = () => {
-            const start = document.getElementById('cdStart').value;
-            const end = document.getElementById('cdEnd').value;
+            const start = document.getElementById('cdStartTime').value;
+            const end = document.getElementById('cdEndTime').value;
             const rate = parseFloat(document.getElementById('cdRate').value);
             if(start && end && rate > 0) {
                 const d1 = new Date("1970-01-01T" + start + "Z");
                 const d2 = new Date("1970-01-01T" + end + "Z");
                 let diff = (d2 - d1) / 1000 / 60; // in minutes
                 if(diff < 0) diff += 24 * 60; // crossed midnight
-                document.getElementById('cdResult').innerText = `Duration: ${diff} mins\nCost: $${(diff*rate).toFixed(2)}`;
+                document.getElementById('cdCallResult').innerText = `Duration: ${diff.toFixed(1)} mins\nCost: $${(diff*rate).toFixed(2)}`;
             }
         };
     }

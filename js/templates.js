@@ -194,11 +194,11 @@ window.EliteTemplates = {
         <button id="pgBtn" class="btn-primary" style="margin-top:24px;">Generate</button>
     `,
     'password-check': `
-        <div class="form-group"><label>Enter Password</label><input type="text" id="pcInput" class="form-control"></div>
+        <div class="form-group"><label>Enter Password</label><input type="text" id="pwcInput" class="form-control"></div>
         <div class="result-box">
-            <p>Strength</p><div class="result-value" id="pcResult">-</div>
+            <p>Strength</p><div class="result-value" id="pwcResult">-</div>
             <div style="height:10px; background:var(--bg-app); border-radius:5px; margin-top:10px; overflow:hidden;">
-                <div id="pcBar" style="height:100%; width:0%; transition:width 0.3s; background:var(--danger);"></div>
+                <div id="pwcBar" style="height:100%; width:0%; transition:width 0.3s; background:var(--danger);"></div>
             </div>
         </div>
     `,
@@ -226,8 +226,8 @@ window.EliteTemplates = {
 
     // === SOCIAL MEDIA ===
     'hashtag-gen': `
-        <div class="form-group"><label>Keyword</label><input type="text" id="htInput" class="form-control" placeholder="e.g. travel"></div>
-        <button id="htBtn" class="btn-primary">Generate</button>
+        <div class="form-group"><label>Keyword</label><input type="text" id="hgInput" class="form-control" placeholder="e.g. travel"></div>
+        <button id="hgBtn" class="btn-primary">Generate</button>
         <textarea id="htResult" class="form-control" style="margin-top:15px;" readonly></textarea>
     `,
     'yt-title-gen': `
@@ -450,10 +450,10 @@ window.EliteTemplates = {
         <div id="ogResult" style="margin-top:20px; border:1px solid var(--border-color); border-radius:8px; overflow:hidden;"></div>
     `,
     'robots-gen': `
-        <div class="form-group"><label>Allow all bots?</label><select id="rgAllow" class="form-control"><option value="yes">Yes</option><option value="no">No</option></select></div>
-        <div class="form-group"><label>Sitemap URL</label><input type="text" id="rgSitemap" class="form-control" placeholder="https://example.com/sitemap.xml"></div>
-        <button id="rgBtn" class="btn-primary">Generate Robots.txt</button>
-        <textarea id="rgResult" class="form-control" style="margin-top:20px;" readonly></textarea>
+        <div class="form-group"><label>Allow all bots?</label><select id="robotsAllow" class="form-control"><option value="yes">Yes</option><option value="no">No</option></select></div>
+        <div class="form-group"><label>Sitemap URL</label><input type="text" id="robotsSitemap" class="form-control" placeholder="https://example.com/sitemap.xml"></div>
+        <button id="robotsBtn" class="btn-primary">Generate Robots.txt</button>
+        <textarea id="robotsResult" class="form-control" style="margin-top:20px;" readonly></textarea>
     `,
     'sitemap-gen': `
         <div class="form-group"><label>Website URLs (One per line)</label><textarea id="smInput" class="form-control" style="height:150px;"></textarea></div>
@@ -550,12 +550,12 @@ window.EliteTemplates = {
     `,
     'call-duration': `
         <div class="grid-2">
-            <div class="form-group"><label>Start Time</label><input type="time" id="cdStart" class="form-control"></div>
-            <div class="form-group"><label>End Time</label><input type="time" id="cdEnd" class="form-control"></div>
+            <div class="form-group"><label>Start Time</label><input type="time" id="cdStartTime" class="form-control"></div>
+            <div class="form-group"><label>End Time</label><input type="time" id="cdEndTime" class="form-control"></div>
         </div>
         <div class="form-group"><label>Rate per minute ($)</label><input type="number" id="cdRate" class="form-control" value="0.05"></div>
-        <button id="cdBtn" class="btn-primary">Calculate Cost</button>
-        <div class="result-box" style="margin-top:20px;"><div class="result-value" id="cdResult">-</div></div>
+        <button id="cdCallBtn" class="btn-primary">Calculate Cost</button>
+        <div class="result-box" style="margin-top:20px;"><div class="result-value" id="cdCallResult">-</div></div>
     `,
 
     // === VIRAL TRAFFIC ===
@@ -587,8 +587,8 @@ window.EliteTemplates = {
         <div class="result-box" style="margin-top:20px;"><div class="result-value" id="lnResult" style="letter-spacing:5px;">-</div></div>
     `,
     'dream-interp': `
-        <div class="form-group"><label>What did you dream about?</label><input type="text" id="diInput" class="form-control" placeholder="e.g. falling, flying, teeth..."></div>
-        <button id="diBtn" class="btn-primary"><i class="fa-solid fa-cloud-moon"></i> Interpret</button>
-        <div id="diResult" style="margin-top:20px; background:var(--bg-card); padding:20px;"></div>
+        <div class="form-group"><label>What did you dream about?</label><input type="text" id="dreamInput" class="form-control" placeholder="e.g. falling, flying, teeth..."></div>
+        <button id="dreamBtn" class="btn-primary"><i class="fa-solid fa-cloud-moon"></i> Interpret</button>
+        <div id="dreamResult" style="margin-top:20px; background:var(--bg-card); padding:20px;"></div>
     `
 };
