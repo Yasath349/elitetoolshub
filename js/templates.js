@@ -69,9 +69,22 @@ window.EliteTemplates = {
         <button id="prBtn" class="btn-primary">Rotate & Save</button>
     `,
     'pdf-sign': `
-        <div class="form-group"><label>Select PDF</label><input type="file" id="psignFile" class="form-control" accept=".pdf"></div>
-        <div class="form-group"><label>Upload Signature Image</label><input type="file" id="psignImg" class="form-control" accept="image/*"></div>
-        <button id="psignBtn" class="btn-primary">Apply Signature</button>
+        <div class="file-upload-wrapper">
+            <i class="fa-solid fa-file-signature file-upload-icon"></i>
+            <span class="file-upload-text">Select PDF to Sign</span>
+            <input type="file" id="psignFile" accept=".pdf">
+            <div id="psignFileName" class="file-selected-name"></div>
+        </div>
+        <div class="form-group">
+            <label>Draw Your Signature Below</label>
+            <div style="background:#fff; border-radius:10px; border:2px solid var(--border); overflow:hidden; position:relative; height:150px;">
+                <canvas id="signCanvas" width="500" height="150" style="width:100%; height:100%; cursor:crosshair;"></canvas>
+            </div>
+            <div style="margin-top:10px; display:flex; gap:10px;">
+                <button id="signClear" class="btn-secondary" style="width:auto; padding:5px 15px;">Clear Pad</button>
+            </div>
+        </div>
+        <button id="psignBtn" class="btn-primary">Apply Signature to PDF</button>
     `,
 
     'pdf-watermark': `

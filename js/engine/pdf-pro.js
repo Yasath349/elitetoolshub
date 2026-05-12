@@ -296,6 +296,71 @@ window.EliteToolEngines['pdf-page-nums'] = {
     }
 };
 
+// PDF Signature Tool
+window.EliteToolEngines['pdf-sign'] = {
+    init: function() {
+        const canvas = document.getElementById('signCanvas');
+        const btn = document.getElementById('psignBtn');
+        const clear = document.getElementById('signClear');
+        if(!canvas || !btn) return;
+
+        const ctx = canvas.getContext('2d');
+        let drawing = false;
+
+        const start = (e) => { drawing = true; draw(e); };
+        const end = () => { drawing = false; ctx.beginPath(); };
+        const draw = (e) => {
+            if(!drawing) return;
+            const rect = canvas.getBoundingClientRect();
+            const x = (e.clientX || e.touches[0].clientX) - rect.left;
+            const y = (e.clientY || e.touches[0].clientY) - rect.top;
+            ctx.lineWidth = 2;
+            ctx.lineCap = 'round';
+            ctx.strokeStyle = '#000';
+            ctx.lineTo(x, y);
+            ctx.stroke();
+            ctx.beginPath();
+            ctx.moveTo(x, y);
+        };
+
+        canvas.onmousedown = start;
+        canvas.onmouseup = end;
+        canvas.onmousemove = draw;
+        canvas.ontouchstart = (e) => { e.preventDefault(); start(e); };
+        canvas.ontouchend = end;
+        canvas.ontouchmove = (e) => { e.preventDefault(); draw(e); };
+
+        clear.onclick = () => ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+        btn.onclick = async () => {
+            const file = document.getElementById('psignFile').files[0];
+            if(!file) return;
+            btn.innerHTML = 'Signing PDF...';
+            try {
+                const bytes = await file.arrayBuffer();
+                const pdf = await PDFLib.PDFDocument.load(bytes);
+                const signImg = await pdf.embedPng(canvas.toDataURL());
+                
+                const pages = pdf.getPages();
+                const lastPage = pages[pages.length - 1];
+                const { width, height } = lastPage.getSize();
+                
+                // Place signature at bottom right
+                lastPage.drawImage(signImg, {
+                    x: width - 160,
+                    y: 40,
+                    width: 140,
+                    height: 42
+                });
+
+                const out = await pdf.save();
+                downloadPDF(out, 'signed_document.pdf');
+            } catch(e) { console.error(e); }
+            btn.innerHTML = 'Apply Signature to PDF';
+        };
+    }
+};
+
 // ==========================================
 // 4. SMART TOOLS (AI) - 100% WORKING SIMULATION
 // ==========================================
