@@ -3,190 +3,182 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Elite Tools Hub - Pro Level Utility Collection</title>
-    
-    <!-- Site Favicon -->
-    <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>⚡</text></svg>">
-    
-    <!-- Core SEO Meta Tags -->
-    <meta name="description" content="Elite Tools Hub offers 70+ professional, high-performance web tools including calculators, text processing, file converters, SEO, and AI generators completely free.">
-    <meta name="keywords" content="free online tools, calculator, text processing, image compressor, SEO tools, AI generators, productivity tools, Elite Tools Hub">
+    <title>Elite Tools Hub - 70+ Free Professional Online Tools</title>
+    <meta name="description" content="Elite Tools Hub offers 70+ professional, free online tools including calculators, text processing, file converters, SEO tools, AI generators & more.">
+    <meta name="keywords" content="free online tools, calculator, text processing, image compressor, SEO tools, AI generators, productivity tools">
     <meta name="author" content="Elite Tools Hub">
     <meta name="robots" content="index, follow">
     <link rel="canonical" href="https://elitetoolshub.netlify.app/">
-    
-    <!-- Open Graph / Social Media Meta Tags -->
-    <meta property="og:title" content="Elite Tools Hub - Premium Online Utilities">
-    <meta property="og:description" content="Access 70+ professional online tools including SEO, Business, Calculators, and AI Generators.">
-    <meta property="og:image" content="https://elitetoolshub.netlify.app/og-image.png">
+    <meta property="og:title" content="Elite Tools Hub - 70+ Free Professional Online Tools">
+    <meta property="og:description" content="Access 70+ professional online tools: SEO, Business, Calculators, AI Generators and more.">
     <meta property="og:url" content="https://elitetoolshub.netlify.app/">
     <meta property="og:type" content="website">
-    
-    <!-- Twitter Card Meta Tags -->
     <meta name="twitter:card" content="summary_large_image">
-    <meta name="twitter:title" content="Elite Tools Hub - Premium Online Utilities">
-    <meta name="twitter:description" content="Access 70+ professional online tools completely free.">
-    <meta name="twitter:image" content="https://elitetoolshub.netlify.app/og-image.png">
-    
-    <!-- Schema.org JSON-LD Structured Data -->
-    <script type="application/ld+json">
-    {
-      "@context": "https://schema.org",
-      "@type": "WebSite",
-      "name": "Elite Tools Hub",
-      "url": "https://elitetoolshub.com/",
-      "description": "70+ professional, high-performance web tools completely free."
-    }
-    </script>
+    <meta name="twitter:title" content="Elite Tools Hub - Free Online Utilities">
+    <script type="application/ld+json">{"@context":"https://schema.org","@type":"WebSite","name":"Elite Tools Hub","url":"https://elitetoolshub.netlify.app/","description":"70+ professional online tools completely free."}</script>
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>⚡</text></svg>">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link rel="stylesheet" href="css/style.css">
-    <!-- FontAwesome -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <!-- External Libs -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf-lib/1.17.1/pdf-lib.min.js"></script>
-    <!-- Google AdSense -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
+    <script src="https://unpkg.com/docx@8.2.2/build/index.js"></script>
     <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-2104004096950357" crossorigin="anonymous"></script>
 </head>
 <body>
-    <div class="app-container">
-        <!-- Sidebar -->
-        <aside class="sidebar">
-            <div class="logo" onclick="window.loadTool(null)" style="cursor:pointer;">
+<div class="app-container">
+
+    <!-- ===== TOP HEADER ===== -->
+    <header class="top-header">
+        <div class="header-left">
+            <button id="mobileMenuBtn" class="mobile-menu-btn" aria-label="Menu"><i class="fa-solid fa-bars"></i></button>
+            <div class="logo" onclick="window.loadTool(null)">
                 <div class="logo-icon"><i class="fa-solid fa-bolt"></i></div>
-                <h1>Elite Tools Hub<span>70+ Pro Tools · Free</span></h1>
-            </div>
-            
-            <div class="search-container">
-                <i class="fa-solid fa-search"></i>
-                <input type="text" id="toolSearch" placeholder="Search tools...">
-            </div>
-
-            <nav class="sidebar-nav" id="sidebarNav">
-                <!-- Dynamically populated categories -->
-            </nav>
-            
-            <div class="sidebar-footer">
-                <button class="theme-toggle" id="themeToggle">
-                    <i class="fa-solid fa-sun"></i> Light Mode
-                </button>
-            </div>
-        </aside>
-
-        <!-- Main Content -->
-        <main class="main-content">
-            <header class="top-header">
-                <button id="mobileMenuBtn" class="mobile-menu-btn"><i class="fa-solid fa-bars"></i></button>
-                <div class="breadcrumbs" id="breadcrumbs">
-                    <span>Home</span>
+                <div class="logo-text">
+                    <span class="logo-name">Elite Tools Hub</span>
+                    <span class="logo-sub">70+ Pro Tools · Free</span>
                 </div>
-                <div class="header-actions">
-                    <button class="btn-icon" title="Settings" onclick="window.openSettingsModal()"><i class="fa-solid fa-gear"></i></button>
-                    <button class="btn-icon" title="Notifications" onclick="window.openNotifModal()"><i class="fa-regular fa-bell"></i></button>
-                    <div class="account-menu" style="display:none;"></div>
-                </div>
-            </header>
-
-
-
-            <div class="content-area" id="contentArea">
-                <!-- Dashboard / Tool UI injected here -->
-            </div>
-            
-            <!-- Global Footer -->
-            <footer class="app-footer">
-                <div class="footer-content">
-                    <p>&copy; 2026 Elite Tools Hub. All rights reserved.</p>
-                    <div class="footer-links">
-                        <a href="about.html">About Us</a>
-                        <a href="privacy.html">Privacy Policy</a>
-                        <a href="terms.html">Terms of Service</a>
-                        <a href="contact.html">Contact Us</a>
-                    </div>
-                </div>
-            </footer>
-        </main>
-    </div>
-
-
-    <!-- Settings Modal -->
-    <div id="settingsModal" class="modal-overlay">
-        <div class="modal-content" style="max-width: 500px;">
-            <button class="modal-close" onclick="window.closeSettingsModal()"><i class="fa-solid fa-xmark"></i></button>
-            <h2 style="margin-bottom:20px;"><i class="fa-solid fa-sliders"></i> Platform Settings</h2>
-            
-            <div class="form-group">
-                <label>Theme Preference</label>
-                <div style="display:flex; gap:10px;">
-                    <button class="btn-secondary" onclick="window.setThemePref('dark')" style="flex:1;"><i class="fa-solid fa-moon"></i> Dark</button>
-                    <button class="btn-secondary" onclick="window.setThemePref('light')" style="flex:1;"><i class="fa-solid fa-sun"></i> Light</button>
-                </div>
-            </div>
-
-            <div class="form-group">
-                <label>Accent Color</label>
-                <div style="display:flex; gap:10px; flex-wrap:wrap;">
-                    <div onclick="window.setAccent('#3b82f6')" style="width:40px; height:40px; border-radius:50%; background:#3b82f6; cursor:pointer; border:2px solid var(--border-color);"></div>
-                    <div onclick="window.setAccent('#8b5cf6')" style="width:40px; height:40px; border-radius:50%; background:#8b5cf6; cursor:pointer; border:2px solid var(--border-color);"></div>
-                    <div onclick="window.setAccent('#10b981')" style="width:40px; height:40px; border-radius:50%; background:#10b981; cursor:pointer; border:2px solid var(--border-color);"></div>
-                    <div onclick="window.setAccent('#ef4444')" style="width:40px; height:40px; border-radius:50%; background:#ef4444; cursor:pointer; border:2px solid var(--border-color);"></div>
-                    <div onclick="window.setAccent('#f59e0b')" style="width:40px; height:40px; border-radius:50%; background:#f59e0b; cursor:pointer; border:2px solid var(--border-color);"></div>
-                    <div onclick="window.setAccent('#ec4899')" style="width:40px; height:40px; border-radius:50%; background:#ec4899; cursor:pointer; border:2px solid var(--border-color);"></div>
-                </div>
-            </div>
-
-            <div class="form-group">
-                <label>Enable UI Animations</label>
-                <select id="settingAnim" class="form-control" onchange="window.setAnimations(this.value)">
-                    <option value="yes">Yes (Smooth Experience)</option>
-                    <option value="no">No (Max Performance)</option>
-                </select>
-            </div>
-            
-            <button class="btn-primary" onclick="window.closeSettingsModal()" style="margin-top:10px;">Save & Apply</button>
-        </div>
-    </div>
-
-    <!-- Notifications Modal -->
-    <div id="notifModal" class="modal-overlay">
-        <div class="modal-content">
-            <button class="modal-close" onclick="window.closeNotifModal()"><i class="fa-solid fa-xmark"></i></button>
-            <h2 style="margin-bottom:20px;"><i class="fa-regular fa-bell"></i> Notifications</h2>
-            
-            <div style="background:var(--bg-card-hover); padding:15px; border-radius:var(--radius-md); margin-bottom:10px; border-left:4px solid var(--primary);">
-                <h4 style="margin-bottom:5px;">Welcome to Elite Tools Hub! 🎉</h4>
-                <p style="font-size:0.9rem; color:var(--text-secondary);">Your new pro-level utility platform is ready to use.</p>
-                <small style="color:gray; font-size:0.75rem; margin-top:5px; display:block;">Just now</small>
-            </div>
-            
-            <div style="background:var(--bg-card-hover); padding:15px; border-radius:var(--radius-md); border-left:4px solid var(--success);">
-                <h4 style="margin-bottom:5px;">System Update Complete</h4>
-                <p style="font-size:0.9rem; color:var(--text-secondary);">70+ new tools have been integrated and optimized.</p>
-                <small style="color:gray; font-size:0.75rem; margin-top:5px; display:block;">2 mins ago</small>
             </div>
         </div>
+
+        <div class="header-center">
+            <div class="search-wrap">
+                <i class="fa-solid fa-magnifying-glass search-icon"></i>
+                <input type="text" id="toolSearch" class="search-input" placeholder="Search 70+ tools...">
+                <kbd class="search-kbd">⌘K</kbd>
+            </div>
+        </div>
+
+        <div class="header-right">
+            <button class="btn-icon" title="Settings" onclick="window.openSettingsModal()"><i class="fa-solid fa-gear"></i></button>
+            <button class="btn-icon" title="Notifications" onclick="window.openNotifModal()"><i class="fa-regular fa-bell"></i></button>
+            <button class="theme-toggle-btn" id="themeToggle" title="Toggle theme">
+                <i class="fa-solid fa-moon"></i>
+            </button>
+        </div>
+    </header>
+
+    <!-- ===== CATEGORY NAV (TOP TABS) ===== -->
+    <div class="category-nav-wrapper">
+        <nav class="category-nav" id="categoryNav" aria-label="Tool categories">
+            <!-- Dynamically populated -->
+        </nav>
     </div>
 
-    <!-- Script imports -->
-    <script src="js/registry.js"></script>
-    <script src="js/templates.js"></script>
-    <script src="js/app.js"></script>
-    <!-- Engines -->
-    <script src="js/engine/calc.js"></script>
-    <script src="js/engine/text.js"></script>
-    <script src="js/engine/file.js"></script>
-    <script src="js/engine/security.js"></script>
-    <script src="js/engine/social.js"></script>
-    <script src="js/engine/dev.js"></script>
-    <script src="js/engine/daily.js"></script>
-    <script src="js/engine/smart.js"></script>
-    <script src="js/engine/prod.js"></script>
-    <script src="js/engine/biz.js"></script>
-    <script src="js/engine/seo.js"></script>
-    <script src="js/engine/ai.js"></script>
-    <script src="js/engine/design.js"></script>
-    <script src="js/engine/mobile.js"></script>
-    <script src="js/engine/viral.js"></script>
+    <!-- ===== MAIN ===== -->
+    <main class="main-content">
+        <div class="content-area" id="contentArea"></div>
+
+        <footer class="app-footer">
+            <div class="footer-content">
+                <p>© 2026 Elite Tools Hub. <span>70+ Professional Browser-Based Tools.</span></p>
+                <div class="footer-links">
+                    <a href="about.html">About</a>
+                    <a href="privacy.html">Privacy</a>
+                    <a href="terms.html">Terms</a>
+                    <a href="contact.html">Contact</a>
+                </div>
+            </div>
+        </footer>
+    </main>
+
+    <!-- Scroll to Top -->
+    <button id="scrollToTop" class="btn-icon" style="position:fixed; bottom:20px; right:20px; z-index:100; display:none; border-radius:50%; width:44px; height:44px; box-shadow:var(--shadow-md);" onclick="window.scrollTo({top:0, behavior:'smooth'})">
+        <i class="fa-solid fa-arrow-up"></i>
+    </button>
+
+    <!-- Mobile Category Drawer -->
+    <div class="mobile-drawer" id="mobileDrawer">
+        <div class="drawer-header">
+            <span>Categories</span>
+            <button onclick="document.getElementById('mobileDrawer').classList.remove('open')"><i class="fa-solid fa-xmark"></i></button>
+        </div>
+        <nav id="mobileDrawerNav"></nav>
+    </div>
+    <div class="drawer-overlay" id="drawerOverlay" onclick="document.getElementById('mobileDrawer').classList.remove('open');document.getElementById('drawerOverlay').classList.remove('active')"></div>
+
+</div>
+
+<!-- ===== SETTINGS MODAL ===== -->
+<div id="settingsModal" class="modal-overlay">
+    <div class="modal-content">
+        <button class="modal-close" onclick="window.closeSettingsModal()"><i class="fa-solid fa-xmark"></i></button>
+        <h2><i class="fa-solid fa-sliders"></i> Platform Settings</h2>
+
+        <div class="form-group">
+            <label>Theme Preference</label>
+            <div class="btn-group">
+                <button class="btn-secondary" id="settingDark" onclick="window.setThemePref('dark')"><i class="fa-solid fa-moon"></i> Dark</button>
+                <button class="btn-secondary" id="settingLight" onclick="window.setThemePref('light')"><i class="fa-solid fa-sun"></i> Light</button>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label>Accent Color</label>
+            <div class="color-swatches">
+                <div class="swatch" onclick="window.setAccent('#6366f1')" data-color="#6366f1" style="background:#6366f1" title="Indigo"></div>
+                <div class="swatch" onclick="window.setAccent('#8b5cf6')" data-color="#8b5cf6" style="background:#8b5cf6" title="Purple"></div>
+                <div class="swatch" onclick="window.setAccent('#10b981')" data-color="#10b981" style="background:#10b981" title="Green"></div>
+                <div class="swatch" onclick="window.setAccent('#ef4444')" data-color="#ef4444" style="background:#ef4444" title="Red"></div>
+                <div class="swatch" onclick="window.setAccent('#f59e0b')" data-color="#f59e0b" style="background:#f59e0b" title="Amber"></div>
+                <div class="swatch" onclick="window.setAccent('#ec4899')" data-color="#ec4899" style="background:#ec4899" title="Pink"></div>
+                <div class="swatch" onclick="window.setAccent('#3b82f6')" data-color="#3b82f6" style="background:#3b82f6" title="Blue"></div>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label>UI Animations</label>
+            <select id="settingAnim" class="form-control" onchange="window.setAnimations(this.value)">
+                <option value="yes">Enabled (Smooth Experience)</option>
+                <option value="no">Disabled (Max Performance)</option>
+            </select>
+        </div>
+
+        <button class="btn-primary" onclick="window.closeSettingsModal()" style="margin-top:8px;">
+            <i class="fa-solid fa-check"></i> Save & Apply
+        </button>
+    </div>
+</div>
+
+<!-- ===== NOTIFICATIONS MODAL ===== -->
+<div id="notifModal" class="modal-overlay">
+    <div class="modal-content">
+        <button class="modal-close" onclick="window.closeNotifModal()"><i class="fa-solid fa-xmark"></i></button>
+        <h2><i class="fa-regular fa-bell"></i> Notifications</h2>
+        <div class="notif-item notif-primary">
+            <h4>Welcome to Elite Tools Hub! 🎉</h4>
+            <p>Your all-in-one utility platform is ready to use.</p>
+            <small>Just now</small>
+        </div>
+        <div class="notif-item notif-success">
+            <h4>All Tools Active ✅</h4>
+            <p>70+ tools are live and fully operational.</p>
+            <small>2 mins ago</small>
+        </div>
+    </div>
+</div>
+
+<!-- Scripts -->
+<script src="js/registry.js"></script>
+<script src="js/templates.js"></script>
+<script src="js/app.js"></script>
+<script src="js/engine/calc.js"></script>
+<script src="js/engine/text.js"></script>
+<script src="js/engine/file.js"></script>
+<script src="js/engine/security.js"></script>
+<script src="js/engine/social.js"></script>
+<script src="js/engine/dev.js"></script>
+<script src="js/engine/daily.js"></script>
+<script src="js/engine/smart.js"></script>
+<script src="js/engine/prod.js"></script>
+<script src="js/engine/biz.js"></script>
+<script src="js/engine/seo.js"></script>
+<script src="js/engine/ai.js"></script>
+<script src="js/engine/design.js"></script>
+<script src="js/engine/mobile.js"></script>
+<script src="js/engine/pdf-pro.js"></script>
+<script src="js/engine/viral.js"></script>
 </body>
 </html>

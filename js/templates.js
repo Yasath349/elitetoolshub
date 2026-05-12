@@ -1,30 +1,131 @@
 window.EliteTemplates = {
-    // === CALCULATORS ===
-    'basic-calc': `
-        <div class="result-box" style="margin-top:0; margin-bottom:20px; text-align:right;">
-            <div id="bcHistory" style="color:var(--text-secondary); height:20px; font-size:0.9rem;"></div>
-            <div id="bcDisplay" class="result-value" style="margin:5px 0;">0</div>
+    // === CONVERT PDF ===
+    'pdf-to-word': `
+        <div class="form-group"><label>Select PDF File</label><input type="file" id="p2wFile" class="form-control" accept=".pdf"></div>
+        <button id="p2wBtn" class="btn-primary"><i class="fa-solid fa-file-word"></i> Convert to Word</button>
+        <div class="result-box" style="margin-top:20px; display:none;" id="p2wStatus"></div>
+    `,
+    'word-to-pdf': `
+        <div class="form-group"><label>Select Word File (.docx)</label><input type="file" id="w2pFile" class="form-control" accept=".docx"></div>
+        <button id="w2pBtn" class="btn-primary">Convert to PDF</button>
+    `,
+    'pdf-to-jpg': `
+        <div class="form-group"><label>Select PDF</label><input type="file" id="p2jFile" class="form-control" accept=".pdf"></div>
+        <button id="p2jBtn" class="btn-primary">Export Pages to JPG</button>
+    `,
+    'pdf-to-txt': `
+        <div class="form-group"><label>Select PDF</label><input type="file" id="p2tFile" class="form-control" accept=".pdf"></div>
+        <button id="p2tBtn" class="btn-primary">Extract Plain Text</button>
+    `,
+    'jpg-to-pdf': `
+        <div class="form-group"><label>Select Images (JPG/PNG)</label><input type="file" id="jtpFiles" class="form-control" accept="image/*" multiple></div>
+        <button id="jtpBtn" class="btn-primary">Combine to PDF</button>
+    `,
+    'html-to-pdf': `
+        <div class="form-group"><label>Enter Web URL</label><input type="url" id="h2pUrl" class="form-control" placeholder="https://example.com"></div>
+        <button id="h2pBtn" class="btn-primary">Capture Page to PDF</button>
+    `,
+
+    // === EDIT PDF ===
+    'pdf-merge': `
+        <div class="form-group"><label>Select multiple PDFs</label><input type="file" id="pmFiles" class="form-control" accept=".pdf" multiple></div>
+        <button id="pmBtn" class="btn-primary"><i class="fa-solid fa-layer-group"></i> Merge PDFs</button>
+    `,
+    'pdf-splitter': `
+        <div class="form-group"><label>Select PDF to Split</label><input type="file" id="psFile" class="form-control" accept=".pdf"></div>
+        <button id="psBtn" class="btn-primary">Split Into Single Pages</button>
+    `,
+    'pdf-compressor': `
+        <div class="form-group"><label>Select PDF</label><input type="file" id="pcFile" class="form-control" accept=".pdf"></div>
+        <div class="form-group"><label>Compression Level</label><select id="pcLevel" class="form-control"><option value="low">Low (High Quality)</option><option value="medium" selected>Medium (Recommended)</option><option value="high">High (Maximum Compression)</option></select></div>
+        <button id="pcBtn" class="btn-primary">Compress PDF</button>
+    `,
+    'pdf-rotator': `
+        <div class="form-group"><label>Select PDF</label><input type="file" id="prFile" class="form-control" accept=".pdf"></div>
+        <div class="form-group"><label>Rotation Angle</label><select id="prAngle" class="form-control"><option value="90">90° Clockwise</option><option value="180">180°</option><option value="270">270° Counter-Clockwise</option></select></div>
+        <button id="prBtn" class="btn-primary">Rotate & Save</button>
+    `,
+    'pdf-sign': `
+        <div class="form-group"><label>Select PDF</label><input type="file" id="psignFile" class="form-control" accept=".pdf"></div>
+        <div class="form-group"><label>Upload Signature Image</label><input type="file" id="psignImg" class="form-control" accept="image/*"></div>
+        <button id="psignBtn" class="btn-primary">Apply Signature</button>
+    `,
+
+    'pdf-watermark': `
+        <div class="form-group"><label>Select PDF</label><input type="file" id="pwFile" class="form-control" accept=".pdf"></div>
+        <div class="form-group"><label>Watermark Text</label><input type="text" id="pwText" class="form-control" placeholder="CONFIDENTIAL" value="ELITE TOOLS HUB"></div>
+        <button id="pwBtn" class="btn-primary">Add Watermark</button>
+    `,
+
+    // === SECURE PDF ===
+    'pdf-lock': `
+        <div class="form-group"><label>Select PDF</label><input type="file" id="plFile" class="form-control" accept=".pdf"></div>
+        <div class="form-group"><label>Set Password</label><input type="password" id="plPass" class="form-control" placeholder="••••••••"></div>
+        <button id="plBtn" class="btn-primary">Encrypt & Lock PDF</button>
+    `,
+    'pdf-unlock': `
+        <div class="form-group"><label>Select Locked PDF</label><input type="file" id="puFile" class="form-control" accept=".pdf"></div>
+        <div class="form-group"><label>Current Password</label><input type="password" id="puPass" class="form-control" placeholder="Enter password to unlock"></div>
+        <button id="puBtn" class="btn-primary">Unlock & Remove Security</button>
+    `,
+
+    // === SMART PDF (AI) ===
+    'pdf-ai-summary': `
+        <div class="form-group"><label>Upload PDF for AI Analysis</label><input type="file" id="aisFile" class="form-control" accept=".pdf"></div>
+        <button id="aisBtn" class="btn-primary"><i class="fa-solid fa-robot"></i> Generate AI Summary</button>
+        <div class="result-box" id="aisResult" style="margin-top:20px; min-height:100px;">
+            <p style="color:var(--text-3)">AI results will appear here...</p>
         </div>
-        <div style="display:grid; grid-template-columns:repeat(4, 1fr); gap:10px;">
-            <button class="btn-secondary" onclick="document.getElementById('bcDisplay').innerText='0';document.getElementById('bcHistory').innerText=''">C</button>
-            <button class="btn-secondary" id="bcDel">DEL</button>
-            <button class="btn-secondary bc-op" data-op="/">/</button>
-            <button class="btn-secondary bc-op" data-op="*">x</button>
-            <button class="btn-primary bc-num" style="background:var(--bg-card-hover);color:var(--text-primary)">7</button>
-            <button class="btn-primary bc-num" style="background:var(--bg-card-hover);color:var(--text-primary)">8</button>
-            <button class="btn-primary bc-num" style="background:var(--bg-card-hover);color:var(--text-primary)">9</button>
-            <button class="btn-secondary bc-op" data-op="-">-</button>
-            <button class="btn-primary bc-num" style="background:var(--bg-card-hover);color:var(--text-primary)">4</button>
-            <button class="btn-primary bc-num" style="background:var(--bg-card-hover);color:var(--text-primary)">5</button>
-            <button class="btn-primary bc-num" style="background:var(--bg-card-hover);color:var(--text-primary)">6</button>
-            <button class="btn-secondary bc-op" data-op="+">+</button>
-            <button class="btn-primary bc-num" style="background:var(--bg-card-hover);color:var(--text-primary)">1</button>
-            <button class="btn-primary bc-num" style="background:var(--bg-card-hover);color:var(--text-primary)">2</button>
-            <button class="btn-primary bc-num" style="background:var(--bg-card-hover);color:var(--text-primary)">3</button>
-            <button class="btn-primary" id="bcEq" style="grid-row:span 2; height:100%;">=</button>
-            <button class="btn-primary bc-num" style="background:var(--bg-card-hover);color:var(--text-primary); grid-column:span 2">0</button>
-            <button class="btn-primary bc-num" style="background:var(--bg-card-hover);color:var(--text-primary)">.</button>
+    `,
+    'pdf-qa': `
+        <div class="form-group"><label>1. Upload PDF</label><input type="file" class="form-control" accept=".pdf"></div>
+        <div class="form-group" style="margin-top:20px;">
+            <label>2. Ask AI anything about this document</label>
+            <div id="qaResult" style="height:250px; overflow-y:auto; background:var(--bg-app); border:1px solid var(--border); border-radius:10px; padding:15px; margin-bottom:10px;">
+                <div style="color:var(--text-3); text-align:center; padding-top:100px;">Chat with your PDF...</div>
+            </div>
+            <div style="display:flex; gap:10px;">
+                <input type="text" id="qaInput" class="form-control" placeholder="What is the total revenue mentioned?">
+                <button id="qaBtn" class="btn-primary" style="width:auto; padding:0 20px;"><i class="fa-solid fa-paper-plane"></i></button>
+            </div>
         </div>
+    `,
+    'pdf-ocr': `
+        <div class="form-group"><label>Select Scanned PDF or Image</label><input type="file" id="ocrFile" class="form-control" accept=".pdf,image/*"></div>
+        <button id="ocrBtn" class="btn-primary">Perform OCR (Extract Text)</button>
+        <div class="form-group" style="margin-top:20px;">
+            <label>Extracted Text</label>
+            <textarea id="ocrResult" class="form-control" style="height:200px;" readonly></textarea>
+        </div>
+    `,
+
+    // === OFFICE & STUDENT ===
+    'pdf-metadata': `
+        <div class="form-group"><label>Select PDF</label><input type="file" id="metaFile" class="form-control" accept=".pdf"></div>
+        <div class="grid-2">
+            <div class="form-group"><label>Title</label><input type="text" id="metaTitle" class="form-control"></div>
+            <div class="form-group"><label>Author</label><input type="text" id="metaAuthor" class="form-control"></div>
+        </div>
+        <button id="metaBtn" class="btn-primary">Update PDF Metadata</button>
+    `,
+    'pdf-page-nums': `
+        <div class="form-group"><label>Select PDF</label><input type="file" id="pnFile" class="form-control" accept=".pdf"></div>
+        <div class="grid-2">
+            <div class="form-group"><label>Position</label><select id="pnPos" class="form-control"><option>Bottom Center</option><option>Bottom Right</option><option>Top Right</option></select></div>
+            <div class="form-group"><label>Starting Number</label><input type="number" id="pnStart" class="form-control" value="1"></div>
+        </div>
+        <button id="pnBtn" class="btn-primary">Add Page Numbers</button>
+    `,
+
+    // === ADVANCED ===
+    'pdf-repair': `
+        <div class="form-group" style="text-align:center; padding:20px;">
+            <i class="fa-solid fa-medkit" style="font-size:3rem; color:var(--primary); margin-bottom:15px;"></i>
+            <h3>Corrupted PDF?</h3>
+            <p style="color:var(--text-2); margin-bottom:20px;">Our advanced engine will attempt to rebuild the cross-reference table and fix internal stream errors.</p>
+            <input type="file" id="repFile" class="form-control" accept=".pdf">
+        </div>
+        <button id="repBtn" class="btn-primary">Attempt Repair</button>
     `,
     'percentage-calc': `
         <div class="grid-2">
@@ -106,13 +207,16 @@ window.EliteTemplates = {
         </div>
     `,
     'case-converter': `
-        <textarea id="caseText" class="form-control" placeholder="Enter text..."></textarea>
+        <div class="form-group"><label>Input Text</label><textarea id="caseText" class="form-control" style="height:150px;" placeholder="Enter text here..."></textarea></div>
         <div style="display:flex;gap:10px;margin-top:15px;flex-wrap:wrap;">
-            <button class="btn-secondary" id="cUpper">UPPERCASE</button>
-            <button class="btn-secondary" id="cLower">lowercase</button>
-            <button class="btn-secondary" id="cTitle">Title Case</button>
-            <button class="btn-secondary" id="cCamel">camelCase</button>
+            <button class="btn-secondary" style="flex:1; width:auto;" id="cUpper">UPPERCASE</button>
+            <button class="btn-secondary" style="flex:1; width:auto;" id="cLower">lowercase</button>
+            <button class="btn-secondary" style="flex:1; width:auto;" id="cTitle">Title Case</button>
+            <button class="btn-secondary" style="flex:1; width:auto;" id="cCamel">camelCase</button>
         </div>
+        <button class="btn-primary" style="margin-top:15px;" onclick="window.copyToClipboard(document.getElementById('caseText').value, this)">
+            <i class="fa-regular fa-copy"></i> Copy Text
+        </button>
     `,
     'tts': `
         <textarea id="ttsText" class="form-control" placeholder="Enter text to read..."></textarea>
@@ -175,23 +279,26 @@ window.EliteTemplates = {
 
     // === SECURITY & WEB ===
     'password-gen': `
-        <div class="result-box" style="margin-top:0; margin-bottom: 24px; position:relative;">
-            <div class="result-value" id="pgResult" style="font-size: 1.8rem; word-break: break-all;">Click Generate</div>
-        </div>
         <div class="grid-2">
-            <div>
-                <div class="form-group"><label>Length (<span id="pgLenVal">16</span>)</label><input type="range" id="pgLength" class="form-control" min="8" max="64" value="16"></div>
+            <div class="form-group">
+                <label>Password Length (<span id="pgLenVal">16</span>)</label>
+                <input type="range" id="pgLength" class="form-control" min="8" max="64" value="16" oninput="document.getElementById('pgLenVal').innerText=this.value">
             </div>
-            <div>
-                <div class="form-group" style="display:flex; flex-direction:column; gap:12px;">
-                    <label><input type="checkbox" id="pgUpper" checked> Uppercase</label>
-                    <label><input type="checkbox" id="pgLower" checked> Lowercase</label>
-                    <label><input type="checkbox" id="pgNum" checked> Numbers</label>
-                    <label><input type="checkbox" id="pgSym" checked> Symbols</label>
-                </div>
+            <div class="form-group" style="display:flex; flex-direction:column; gap:12px;">
+                <label><input type="checkbox" id="pgUpper" checked> Uppercase (A-Z)</label>
+                <label><input type="checkbox" id="pgLower" checked> Lowercase (a-z)</label>
+                <label><input type="checkbox" id="pgNum" checked> Numbers (0-9)</label>
+                <label><input type="checkbox" id="pgSym" checked> Symbols (!@#$)</label>
             </div>
         </div>
-        <button id="pgBtn" class="btn-primary" style="margin-top:24px;">Generate</button>
+        <button id="pgBtn" class="btn-primary" style="margin-top:14px;">Generate Strong Password</button>
+        <div class="result-box">
+            <p>Generated Password</p>
+            <div class="result-value" id="pgResult" style="font-size:1.6rem; word-break:break-all;">-</div>
+            <button class="btn-secondary" style="margin-top:10px; width:auto; padding:8px 16px;" onclick="window.copyToClipboard(document.getElementById('pgResult').innerText, this)">
+                <i class="fa-regular fa-copy"></i> Copy Password
+            </button>
+        </div>
     `,
     'password-check': `
         <div class="form-group"><label>Enter Password</label><input type="text" id="pwcInput" class="form-control"></div>
@@ -209,26 +316,42 @@ window.EliteTemplates = {
         </div>
     `,
     'base64': `
-        <textarea id="b64Input" class="form-control" placeholder="Enter text or Base64..."></textarea>
-        <div style="display:flex;gap:10px;margin-top:15px;">
+        <div class="form-group"><label>Input Text / Base64</label><textarea id="b64Input" class="form-control" style="height:100px;" placeholder="Enter content..."></textarea></div>
+        <div style="display:flex;gap:10px;">
             <button id="b64Enc" class="btn-primary">Encode</button>
             <button id="b64Dec" class="btn-secondary">Decode</button>
         </div>
-        <textarea id="b64Output" class="form-control" style="margin-top:15px;" readonly></textarea>
+        <div class="form-group" style="margin-top:20px;">
+            <label>Output</label>
+            <textarea id="b64Output" class="form-control" style="height:100px;" readonly></textarea>
+        </div>
+        <button class="btn-secondary" onclick="window.copyToClipboard(document.getElementById('b64Output').value, this)">
+            <i class="fa-regular fa-copy"></i> Copy Result
+        </button>
     `,
     'hash-gen': `
-        <textarea id="hgInput" class="form-control" placeholder="Enter text to hash..."></textarea>
-        <button id="hgBtn" class="btn-primary" style="margin-top:15px;">Generate SHA-256</button>
-        <div class="result-box" style="margin-top:15px;">
-            <div class="result-value" id="hgResult" style="font-size:1.2rem;word-break:break-all;">-</div>
+        <div class="form-group"><label>Text to Hash</label><textarea id="hgInput" class="form-control" style="height:80px;" placeholder="Enter text..."></textarea></div>
+        <button id="hgBtn" class="btn-primary">Generate SHA-256</button>
+        <div class="result-box">
+            <p>SHA-256 Hash</p>
+            <div class="result-value" id="hgResult" style="font-size:1.1rem;word-break:break-all;">-</div>
+            <button class="btn-secondary" style="margin-top:10px; width:auto; padding:8px 16px;" onclick="window.copyToClipboard(document.getElementById('hgResult').innerText, this)">
+                <i class="fa-regular fa-copy"></i> Copy Hash
+            </button>
         </div>
     `,
 
     // === SOCIAL MEDIA ===
     'hashtag-gen': `
-        <div class="form-group"><label>Keyword</label><input type="text" id="hgInput" class="form-control" placeholder="e.g. travel"></div>
-        <button id="hgBtn" class="btn-primary">Generate</button>
-        <textarea id="htResult" class="form-control" style="margin-top:15px;" readonly></textarea>
+        <div class="form-group"><label>Enter Keyword</label><input type="text" id="hgInput" class="form-control" placeholder="e.g. travel, tech, food"></div>
+        <button id="hgBtn" class="btn-primary">Generate Viral Tags</button>
+        <div class="form-group" style="margin-top:20px;">
+            <label>Generated Hashtags</label>
+            <textarea id="htResult" class="form-control" style="height:120px;" readonly></textarea>
+        </div>
+        <button class="btn-secondary" onclick="window.copyToClipboard(document.getElementById('htResult').value, this)">
+            <i class="fa-regular fa-copy"></i> Copy All
+        </button>
     `,
     'yt-title-gen': `
         <div class="form-group"><label>Video Topic</label><input type="text" id="ytInput" class="form-control" placeholder="e.g. productivity"></div>
@@ -238,11 +361,18 @@ window.EliteTemplates = {
 
     // === DEVELOPER TOOLS ===
     'json-formatter': `
-        <div class="grid-2">
-            <textarea id="jfInput" class="form-control" placeholder="Paste unformatted JSON here..." style="font-family:monospace;"></textarea>
-            <textarea id="jfOutput" class="form-control" readonly style="font-family:monospace;background:var(--bg-app);"></textarea>
+        <div class="form-group"><label>Input JSON</label><textarea id="jfInput" class="form-control" style="height:150px;" placeholder='{"key": "value"}'></textarea></div>
+        <div class="btn-group">
+            <button id="jfBtn" class="btn-primary">Beautify JSON</button>
+            <button class="btn-secondary" style="flex:0.3" onclick="document.getElementById('jfInput').value='';document.getElementById('jfResult').value=''">Clear</button>
         </div>
-        <button id="jfBtn" class="btn-primary" style="margin-top:15px;">Format JSON</button>
+        <div class="form-group" style="margin-top:20px;">
+            <label>Formatted Output</label>
+            <textarea id="jfResult" class="form-control" style="height:200px; font-family:monospace;" readonly></textarea>
+        </div>
+        <button class="btn-secondary" onclick="window.copyToClipboard(document.getElementById('jfResult').value, this)">
+            <i class="fa-regular fa-copy"></i> Copy JSON
+        </button>
     `,
     'live-editor': `
         <div class="grid-2">
@@ -257,11 +387,23 @@ window.EliteTemplates = {
     'color-picker': `
         <div class="grid-2">
             <div>
-                <input type="color" id="cpInput" style="width:100%;height:100px;border:none;border-radius:var(--radius-md);">
+                <div class="form-group"><label>Select Color</label><input type="color" id="cpInput" style="width:100%;height:140px;border:none;border-radius:var(--radius-md);cursor:pointer;background:none;"></div>
             </div>
-            <div class="result-box" style="margin-top:0;">
-                <p>HEX</p><div id="cpHex" style="font-weight:bold;margin-bottom:10px;">#000000</div>
-                <p>RGB</p><div id="cpRgb" style="font-weight:bold;">rgb(0,0,0)</div>
+            <div class="result-box" style="margin-top:0; display:flex; flex-direction:column; justify-content:center; gap:14px;">
+                <div>
+                    <p style="margin-bottom:4px;">HEX Code</p>
+                    <div style="display:flex; gap:8px; align-items:center;">
+                        <div id="cpHex" style="font-family:'Outfit',sans-serif; font-weight:800; font-size:1.2rem; flex:1;">#000000</div>
+                        <button class="btn-icon" onclick="window.copyToClipboard(document.getElementById('cpHex').innerText, this)"><i class="fa-regular fa-copy"></i></button>
+                    </div>
+                </div>
+                <div>
+                    <p style="margin-bottom:4px;">RGB Code</p>
+                    <div style="display:flex; gap:8px; align-items:center;">
+                        <div id="cpRgb" style="font-family:'Outfit',sans-serif; font-weight:800; font-size:1.1rem; flex:1;">rgb(0,0,0)</div>
+                        <button class="btn-icon" onclick="window.copyToClipboard(document.getElementById('cpRgb').innerText, this)"><i class="fa-regular fa-copy"></i></button>
+                    </div>
+                </div>
             </div>
         </div>
     `,
@@ -450,10 +592,16 @@ window.EliteTemplates = {
         <div id="ogResult" style="margin-top:20px; border:1px solid var(--border-color); border-radius:8px; overflow:hidden;"></div>
     `,
     'robots-gen': `
-        <div class="form-group"><label>Allow all bots?</label><select id="robotsAllow" class="form-control"><option value="yes">Yes</option><option value="no">No</option></select></div>
-        <div class="form-group"><label>Sitemap URL</label><input type="text" id="robotsSitemap" class="form-control" placeholder="https://example.com/sitemap.xml"></div>
+        <div class="form-group"><label>Allow all search bots?</label><select id="robotsAllow" class="form-control"><option value="yes">Yes (Allow All)</option><option value="no">No (Block All)</option></select></div>
+        <div class="form-group"><label>Sitemap URL (Optional)</label><input type="text" id="robotsSitemap" class="form-control" placeholder="https://example.com/sitemap.xml"></div>
         <button id="robotsBtn" class="btn-primary">Generate Robots.txt</button>
-        <textarea id="robotsResult" class="form-control" style="margin-top:20px;" readonly></textarea>
+        <div class="form-group" style="margin-top:20px;">
+            <label>Generated Content</label>
+            <textarea id="robotsResult" class="form-control" style="height:120px; font-family:monospace;" readonly></textarea>
+        </div>
+        <button class="btn-secondary" onclick="window.copyToClipboard(document.getElementById('robotsResult').value, this)">
+            <i class="fa-regular fa-copy"></i> Copy to Clipboard
+        </button>
     `,
     'sitemap-gen': `
         <div class="form-group"><label>Website URLs (One per line)</label><textarea id="smInput" class="form-control" style="height:150px;"></textarea></div>
@@ -471,7 +619,8 @@ window.EliteTemplates = {
         <div class="form-group"><label>Email Subject / Intent</label><input type="text" id="ewIntent" class="form-control" placeholder="e.g. Asking for a day off"></div>
         <div class="form-group"><label>Tone</label><select id="ewTone" class="form-control"><option>Professional</option><option>Casual</option><option>Urgent</option></select></div>
         <button id="ewBtn" class="btn-primary"><i class="fa-solid fa-wand-magic-sparkles"></i> Generate AI Email</button>
-        <textarea id="ewResult" class="form-control" style="margin-top:20px; height:200px;"></textarea>
+        <div id="ewLoader" class="loader-ai" style="display:none;"></div>
+        <textarea id="ewResult" class="form-control" style="margin-top:20px; height:200px; display:none;"></textarea>
     `,
     'blog-idea': `
         <div class="form-group"><label>Niche / Topic</label><input type="text" id="biTopic" class="form-control" placeholder="e.g. Fitness"></div>
@@ -482,7 +631,8 @@ window.EliteTemplates = {
         <div class="form-group"><label>Product Name</label><input type="text" id="acProd" class="form-control"></div>
         <div class="form-group"><label>Key Benefit</label><input type="text" id="acBen" class="form-control"></div>
         <button id="acBtn" class="btn-primary"><i class="fa-solid fa-wand-magic-sparkles"></i> Generate Ad Copy</button>
-        <div id="acResult" style="margin-top:20px; background:var(--bg-card); padding:20px; white-space:pre-wrap;"></div>
+        <div id="acLoader" class="loader-ai" style="display:none;"></div>
+        <div id="acResult" style="margin-top:20px; background:var(--bg-card); padding:20px; white-space:pre-wrap; border-radius:10px; border:1px solid var(--border); display:none;"></div>
     `,
     'product-desc': `
         <div class="form-group"><label>Product Name</label><input type="text" id="pdName" class="form-control"></div>

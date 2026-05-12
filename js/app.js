@@ -1,190 +1,340 @@
 document.addEventListener('DOMContentLoaded', () => {
-    // --- State & DOM Elements ---
-    const sidebarNav = document.getElementById('sidebarNav');
-    const contentArea = document.getElementById('contentArea');
-    const breadcrumbs = document.getElementById('breadcrumbs');
-    const themeToggle = document.getElementById('themeToggle');
-    const mobileMenuBtn = document.getElementById('mobileMenuBtn');
-    const sidebar = document.querySelector('.sidebar');
-    const searchInput = document.getElementById('toolSearch');
 
-    // --- Theme Management ---
-    const initTheme = () => {
-        const savedTheme = localStorage.getItem('theme');
-        const isDark = savedTheme ? savedTheme === 'dark' : true; // Default to dark for premium feel
-        
+    // ── DOM refs ──
+    const contentArea    = document.getElementById('contentArea');
+    const categoryNav    = document.getElementById('categoryNav');
+    const searchInput    = document.getElementById('toolSearch');
+    const themeToggle    = document.getElementById('themeToggle');
+    const mobileMenuBtn  = document.getElementById('mobileMenuBtn');
+    const mobileDrawer   = document.getElementById('mobileDrawer');
+    const drawerOverlay  = document.getElementById('drawerOverlay');
+    const mobileDrawerNav= document.getElementById('mobileDrawerNav');
+
+    // ── Helper: FontAwesome Class ──
+    const getIconClass = (icon) => {
+        const brands = ['facebook', 'instagram', 'twitter', 'youtube', 'tiktok', 'linkedin', 'github', 'discord', 'x-twitter'];
+        return brands.some(b => icon.includes(b)) ? 'fa-brands' : 'fa-solid';
+    };
+
+    // ── Theme ──
+    const applyTheme = (isDark) => {
         if (isDark) {
             document.documentElement.classList.add('dark');
-            themeToggle.innerHTML = '<i class="fa-solid fa-sun"></i> Light Mode';
+            themeToggle.innerHTML = '<i class="fa-solid fa-sun"></i>';
+            themeToggle.title = 'Switch to Light Mode';
         } else {
             document.documentElement.classList.remove('dark');
-            themeToggle.innerHTML = '<i class="fa-solid fa-moon"></i> Dark Mode';
+            themeToggle.innerHTML = '<i class="fa-solid fa-moon"></i>';
+            themeToggle.title = 'Switch to Dark Mode';
         }
+        // Keep settings buttons in sync
+        const dBtn = document.getElementById('settingDark');
+        const lBtn = document.getElementById('settingLight');
+        if (dBtn) dBtn.style.borderColor = isDark  ? 'var(--primary)' : 'var(--border)';
+        if (lBtn) lBtn.style.borderColor = !isDark ? 'var(--primary)' : 'var(--border)';
+    };
+
+    const initTheme = () => {
+        const saved = localStorage.getItem('elite_theme');
+        applyTheme(saved ? saved === 'dark' : true);
     };
 
     themeToggle.addEventListener('click', () => {
-        const isDark = document.documentElement.classList.toggle('dark');
-        localStorage.setItem('theme', isDark ? 'dark' : 'light');
-        themeToggle.innerHTML = isDark 
-            ? '<i class="fa-solid fa-sun"></i> Light Mode' 
-            : '<i class="fa-solid fa-moon"></i> Dark Mode';
+        const isDark = !document.documentElement.classList.contains('dark');
+        localStorage.setItem('elite_theme', isDark ? 'dark' : 'light');
+        applyTheme(isDark);
     });
 
-    // --- Mobile Menu ---
+    // ── Scroll to Top Logic ──
+    const scrollToTopBtn = document.getElementById('scrollToTop');
+    window.addEventListener('scroll', () => {
+        if (window.pageYOffset > 300) {
+            scrollToTopBtn.style.display = 'flex';
+        } else {
+            scrollToTopBtn.style.display = 'none';
+        }
+    });
+
+    // ── Mobile Drawer ──
     mobileMenuBtn.addEventListener('click', () => {
-        sidebar.classList.toggle('open');
+        mobileDrawer.classList.add('open');
+        drawerOverlay.classList.add('active');
     });
 
-    // Close sidebar on click outside in mobile
-    document.addEventListener('click', (e) => {
-        if (window.innerWidth <= 992) {
-            if (!sidebar.contains(e.target) && !mobileMenuBtn.contains(e.target)) {
-                sidebar.classList.remove('open');
+    const closeDrawer = () => {
+        mobileDrawer.classList.remove('open');
+        drawerOverlay.classList.remove('active');
+    };
+
+    // ── Render Category Nav (TOP TABS) ──
+    const renderCategoryNav = () => {
+        categoryNav.innerHTML = '';
+        mobileDrawerNav.innerHTML = '';
+
+        // Home tab
+        const homeTab = document.createElement('button');
+        homeTab.className = 'cat-tab home-tab';
+        homeTab.id = 'cat-home';
+        homeTab.innerHTML = '<i class="fa-solid fa-house"></i> Home';
+        homeTab.addEventListener('click', () => {
+            window.loadTool(null);
+            closeDrawer();
+        });
+        categoryNav.appendChild(homeTab);
+
+        // Category tabs
+        toolCategories.forEach(cat => {
+            const tab = document.createElement('button');
+            tab.className = 'cat-tab';
+            tab.id = `cat-${cat.id}`;
+            tab.innerHTML = `<i class="${getIconClass(cat.icon)} ${cat.icon}"></i> ${cat.name}`;
+            tab.addEventListener('click', () => {
+                renderCategory(cat.id);
+                setActiveTab(cat.id);
+                closeDrawer();
+            });
+            categoryNav.appendChild(tab);
+
+            // Mobile drawer section
+            const catTitle = document.createElement('div');
+            catTitle.className = 'drawer-cat-title';
+            catTitle.textContent = cat.name;
+            mobileDrawerNav.appendChild(catTitle);
+
+            // Mobile drawer items
+            const toolsToRender = cat.isSuite 
+                ? cat.sections.flatMap(s => s.tools) 
+                : cat.tools;
+
+            toolsToRender.forEach(tool => {
+                const btn = document.createElement('button');
+                btn.className = 'drawer-item';
+                btn.innerHTML = `<i class="${getIconClass(tool.icon)} ${tool.icon}"></i> ${tool.name}`;
+                btn.addEventListener('click', () => {
+                    window.loadTool(tool.id);
+                    closeDrawer();
+                });
+                mobileDrawerNav.appendChild(btn);
+            });
+        });
+    };
+
+    const setActiveTab = (catId) => {
+        document.querySelectorAll('.cat-tab').forEach(t => {
+            t.classList.remove('active');
+            if (t.id === `cat-${catId || 'home'}`) {
+                t.classList.add('active');
+                // Scroll into view if off-screen
+                t.scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'center' });
+            }
+        });
+        if (!catId) {
+            const homeTab = document.getElementById('cat-home');
+            if (homeTab) {
+                homeTab.classList.add('active');
+                homeTab.scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'center' });
             }
         }
-    });
-
-    // --- Render Sidebar ---
-    const renderSidebar = () => {
-        sidebarNav.innerHTML = '';
-        
-        // Home Button
-        const homeItem = document.createElement('a');
-        homeItem.href = '#';
-        homeItem.className = 'nav-item active';
-        homeItem.innerHTML = `<i class="fa-solid fa-house"></i> Dashboard`;
-        homeItem.addEventListener('click', (e) => {
-            e.preventDefault();
-            renderDashboard();
-            updateActiveNav(null);
-            if(window.innerWidth <= 992) sidebar.classList.remove('open');
-        });
-        sidebarNav.appendChild(homeItem);
-
-        // Categories
-        toolCategories.forEach(category => {
-            const catDiv = document.createElement('div');
-            catDiv.className = 'nav-category';
-            
-            const title = document.createElement('h3');
-            title.className = 'nav-category-title';
-            title.textContent = category.name;
-            catDiv.appendChild(title);
-
-            category.tools.forEach(tool => {
-                const item = document.createElement('a');
-                item.href = `#${tool.id}`;
-                item.className = 'nav-item';
-                item.dataset.id = tool.id;
-                item.innerHTML = `<i class="${tool.icon.includes('youtube') ? 'fa-brands' : 'fa-solid'} ${tool.icon}"></i> ${tool.name}`;
-                
-                item.addEventListener('click', (e) => {
-                    e.preventDefault();
-                    renderTool(tool.id);
-                    updateActiveNav(tool.id);
-                    if(window.innerWidth <= 992) sidebar.classList.remove('open');
-                });
-                
-                catDiv.appendChild(item);
-            });
-            
-            sidebarNav.appendChild(catDiv);
-        });
     };
 
-    const updateActiveNav = (toolId) => {
-        document.querySelectorAll('.nav-item').forEach(el => el.classList.remove('active'));
-        if (toolId) {
-            const activeEl = document.querySelector(`.nav-item[data-id="${toolId}"]`);
-            if (activeEl) activeEl.classList.add('active');
+    // ── Render Category view (single category) ──
+    const renderCategory = (catId) => {
+        const cat = toolCategories.find(c => c.id === catId);
+        if (!cat) return;
+
+        setBreadcrumb(`
+            <span onclick="window.loadTool(null)">Home</span>
+            <i class="fa-solid fa-chevron-right"></i>
+            <span class="active">${cat.name}</span>
+        `);
+
+        if (cat.isSuite) {
+            contentArea.innerHTML = `
+                <div class="tool-view">
+                    <div class="section-title">
+                        <i class="${getIconClass(cat.icon)} ${cat.icon}"></i>
+                        ${cat.name}
+                    </div>
+                    ${cat.sections.map(section => `
+                        <div class="suite-section" style="margin-top:30px;">
+                            <h3 style="margin-bottom:15px; color:var(--primary); display:flex; align-items:center; gap:10px;">
+                                <i class="fa-solid fa-folder-open"></i> ${section.name}
+                            </h3>
+                            <div class="tools-grid">
+                                ${section.tools.map(tool => `
+                                    <div class="tool-card" onclick="window.loadTool('${tool.id}')">
+                                        <div class="tool-icon-wrapper">
+                                            <i class="fa-solid ${tool.icon}"></i>
+                                        </div>
+                                        <h3>${tool.name}</h3>
+                                        <p>${tool.desc}</p>
+                                    </div>
+                                `).join('')}
+                            </div>
+                        </div>
+                    `).join('')}
+                </div>
+            `;
         } else {
-            sidebarNav.querySelector('.nav-item').classList.add('active');
+            contentArea.innerHTML = `
+                <div class="tool-view">
+                    <div class="section-title">
+                        <i class="${getIconClass(cat.icon)} ${cat.icon}"></i>
+                        ${cat.name}
+                    </div>
+                    <div class="tools-grid">
+                        ${cat.tools.map(tool => `
+                            <div class="tool-card" onclick="window.loadTool('${tool.id}')">
+                                <div class="tool-icon-wrapper">
+                                    <i class="${getIconClass(tool.icon)} ${tool.icon}"></i>
+                                </div>
+                                <h3>${tool.name}</h3>
+                                <p>${tool.desc}</p>
+                            </div>
+                        `).join('')}
+                    </div>
+                </div>
+            `;
         }
     };
 
-    // --- Search Functionality ---
+    // ── Search ──
     searchInput.addEventListener('input', (e) => {
-        const term = e.target.value.toLowerCase();
-        if(term.length === 0) {
-            renderDashboard();
-            return;
-        }
+        const term = e.target.value.toLowerCase().trim();
+        if (!term) { renderDashboard(); setActiveTab(null); return; }
 
-        const filteredTools = allTools.filter(t => 
+        const results = allTools.filter(t =>
             t.name.toLowerCase().includes(term) || t.desc.toLowerCase().includes(term)
         );
 
+        setBreadcrumb(`<span class="active">Search: "${e.target.value}"</span>`);
+        setActiveTab(null);
+
         contentArea.innerHTML = `
-            <div class="section-title">
-                <i class="fa-solid fa-search"></i> Search Results for "${e.target.value}"
-            </div>
-            <div class="tools-grid">
-                ${filteredTools.map(tool => `
-                    <div class="tool-card" onclick="window.loadTool('${tool.id}')">
-                        <div class="tool-icon-wrapper">
-                            <i class="${tool.icon.includes('youtube') ? 'fa-brands' : 'fa-solid'} ${tool.icon}"></i>
+            <div class="tool-view">
+                <div class="section-title">
+                    <i class="fa-solid fa-magnifying-glass"></i>
+                    ${results.length} result(s) for "${e.target.value}"
+                </div>
+                <div class="tools-grid">
+                    ${results.length ? results.map(tool => `
+                        <div class="tool-card" onclick="window.loadTool('${tool.id}')">
+                            <div class="tool-icon-wrapper">
+                                <i class="${getIconClass(tool.icon)} ${tool.icon}"></i>
+                            </div>
+                            <h3>${tool.name}</h3>
+                            <p>${tool.desc}</p>
                         </div>
-                        <h3>${tool.name}</h3>
-                        <p>${tool.desc}</p>
-                    </div>
-                `).join('')}
+                    `).join('') : `<p style="color:var(--text-2);padding:20px">No tools found. Try a different keyword.</p>`}
+                </div>
             </div>
         `;
     });
 
-    // Expose loadTool globally for onclick handlers in HTML strings
+    // ── Breadcrumb helper ──
+    const setBreadcrumb = (html) => {
+        let bc = document.querySelector('.breadcrumbs');
+        if (!bc) {
+            bc = document.createElement('div');
+            bc.className = 'breadcrumbs';
+            contentArea.before(bc);
+        }
+        bc.innerHTML = html;
+    };
+
+    // ── Global loadTool ──
     window.loadTool = (id) => {
+        searchInput.value = '';
         if (!id) {
             renderDashboard();
-            updateActiveNav(null);
-            searchInput.value = '';
+            setActiveTab(null);
             window.location.hash = '';
+            // Reset SEO
+            document.title = "Elite Tools Hub - 70+ Free Professional Online Tools";
+            document.querySelector('meta[name="description"]').setAttribute("content", "Elite Tools Hub offers 70+ professional, free online tools including calculators, text processing, file converters, SEO tools, AI generators & more.");
             return;
         }
         renderTool(id);
-        updateActiveNav(id);
-        searchInput.value = '';
+        // Activate correct category tab (Updated for Suite support)
+        const cat = toolCategories.find(c => {
+            if (c.isSuite) return c.sections.some(s => s.tools.some(t => t.id === id));
+            return c.tools.some(t => t.id === id);
+        });
+        if (cat) setActiveTab(cat.id);
         window.location.hash = id;
+
+        // Update SEO
+        const tool = getToolById(id);
+        if (tool) {
+            document.title = `${tool.name} - Elite Tools Hub`;
+            document.querySelector('meta[name="description"]').setAttribute("content", tool.desc);
+        }
     };
 
-    // --- Render Views ---
+    // ── Keyboard Shortcuts ──
+    document.addEventListener('keydown', (e) => {
+        if ((e.metaKey || e.ctrlKey) && e.key === 'k') {
+            e.preventDefault();
+            searchInput.focus();
+        }
+    });
+
+    // ── Copy Utility ──
+    window.copyToClipboard = (text, btnElement) => {
+        if (!text) return;
+        navigator.clipboard.writeText(text).then(() => {
+            const original = btnElement.innerHTML;
+            btnElement.innerHTML = '<i class="fa-solid fa-check"></i> Copied!';
+            btnElement.classList.add('btn-success');
+            setTimeout(() => {
+                btnElement.innerHTML = original;
+                btnElement.classList.remove('btn-success');
+            }, 2000);
+        });
+    };
+
+    // ── Dashboard ──
     const renderDashboard = () => {
-        breadcrumbs.innerHTML = `<span class="active">Dashboard</span>`;
-        
+        setBreadcrumb('<span class="active">Dashboard</span>');
+
         let html = `
             <div class="hero-section">
                 <div class="hero-content">
                     <h2>Your All-in-One Tool Suite ⚡</h2>
-                    <p>70+ professional, browser-based utilities for productivity, design, development, and daily life — all completely free.</p>
+                    <p>70+ professional browser-based utilities for productivity, development, design &amp; daily life — all completely free.</p>
                     <div class="hero-stats">
-                        <div class="hero-stat">
-                            <span class="stat-num">70+</span>
-                            <span class="stat-label">Free Tools</span>
-                        </div>
-                        <div class="hero-stat">
-                            <span class="stat-num">15</span>
-                            <span class="stat-label">Categories</span>
-                        </div>
-                        <div class="hero-stat">
-                            <span class="stat-num">100%</span>
-                            <span class="stat-label">Browser-Based</span>
-                        </div>
+                        <div class="hero-stat"><span class="stat-num">70+</span><span class="stat-label">Free Tools</span></div>
+                        <div class="hero-stat"><span class="stat-num">15</span><span class="stat-label">Categories</span></div>
+                        <div class="hero-stat"><span class="stat-num">100%</span><span class="stat-label">Secure</span></div>
                     </div>
                 </div>
             </div>
+
+            <div class="about-section" style="margin-bottom: 40px; padding: 20px; border-radius: var(--radius-lg); background: var(--bg-card); border: 1px solid var(--border);">
+                <h3 style="font-family: 'Outfit', sans-serif; margin-bottom: 10px;">Why Elite Tools Hub?</h3>
+                <p style="font-size: 0.9rem; color: var(--text-2);">
+                    Elite Tools Hub is designed for professionals who need fast, reliable, and privacy-focused utilities. 
+                    All our tools run <strong>locally in your browser</strong>, meaning your data never leaves your device. 
+                    No registration, no hidden costs, just pure productivity.
+                </p>
+            </div>
         `;
 
-        toolCategories.forEach(category => {
+        toolCategories.forEach(cat => {
+            const toolsToRender = cat.isSuite 
+                ? cat.sections.flatMap(s => s.tools) 
+                : cat.tools;
+
             html += `
                 <div class="section-title">
-                    <i class="${category.icon.includes('youtube') ? 'fa-brands' : 'fa-solid'} ${category.icon}"></i>
-                    ${category.name}
+                    <i class="${getIconClass(cat.icon)} ${cat.icon}"></i>
+                    ${cat.name}
                 </div>
                 <div class="tools-grid">
-                    ${category.tools.map(tool => `
+                    ${toolsToRender.map(tool => `
                         <div class="tool-card" onclick="window.loadTool('${tool.id}')">
                             <div class="tool-icon-wrapper">
-                                <i class="${tool.icon.includes('youtube') ? 'fa-brands' : 'fa-solid'} ${tool.icon}"></i>
+                                <i class="${getIconClass(tool.icon)} ${tool.icon}"></i>
                             </div>
                             <h3>${tool.name}</h3>
                             <p>${tool.desc}</p>
@@ -197,126 +347,134 @@ document.addEventListener('DOMContentLoaded', () => {
         contentArea.innerHTML = html;
     };
 
+    // ── Render Tool ──
     const renderTool = (id) => {
         const tool = getToolById(id);
         if (!tool) return;
+        const cat = toolCategories.find(c => {
+            if (c.isSuite) return c.sections.some(s => s.tools.some(t => t.id === id));
+            return c.tools.some(t => t.id === id);
+        });
 
-        const category = toolCategories.find(c => c.tools.some(t => t.id === id));
-        
-        breadcrumbs.innerHTML = `
-            <span style="cursor:pointer" onclick="window.loadTool(null)">Dashboard</span> 
-            <i class="fa-solid fa-chevron-right" style="font-size:0.8rem;margin:0 8px"></i> 
-            <span>${category.name}</span>
-            <i class="fa-solid fa-chevron-right" style="font-size:0.8rem;margin:0 8px"></i> 
+        setBreadcrumb(`
+            <span onclick="window.loadTool(null)">Home</span>
+            <i class="fa-solid fa-chevron-right"></i>
+            <span onclick="window.renderCategory && window.renderCategory('${cat.id}')">${cat.name}</span>
+            <i class="fa-solid fa-chevron-right"></i>
             <span class="active">${tool.name}</span>
-        `;
+        `);
 
-        // Load Tool UI
-        const uiTemplate = getToolTemplate(id);
-        
+        const uiTemplate = window.EliteTemplates[id] || `<p style="color:var(--text-2)">UI for ${id} coming soon.</p>`;
+
         contentArea.innerHTML = `
             <div class="tool-view fade-in">
                 <div class="tool-header">
                     <h2>${tool.name}</h2>
                     <p>${tool.desc}</p>
                 </div>
-                <div class="tool-workspace">
-                    ${uiTemplate}
-                </div>
+                <div class="tool-workspace">${uiTemplate}</div>
             </div>
         `;
 
-        // Initialize Tool Logic
         if (window.EliteToolEngines && window.EliteToolEngines[id]) {
-            setTimeout(() => {
-                window.EliteToolEngines[id].init();
-            }, 0);
+            setTimeout(() => window.EliteToolEngines[id].init(), 0);
         } else {
-             contentArea.innerHTML += `
-                <div class="tool-view" style="margin-top:20px;">
-                    <div class="tool-workspace" style="text-align:center; padding: 40px; color: var(--warning);">
-                        <i class="fa-solid fa-person-digging" style="font-size:3rem; margin-bottom:16px;"></i>
+            contentArea.innerHTML += `
+                <div class="tool-view" style="margin-top:16px">
+                    <div class="tool-workspace" style="text-align:center;padding:40px;color:var(--warning)">
+                        <i class="fa-solid fa-person-digging" style="font-size:2.5rem;margin-bottom:12px;display:block"></i>
                         <h3>Under Construction</h3>
-                        <p>The logic engine for this tool is currently being developed.</p>
+                        <p style="color:var(--text-2);margin-top:6px">The engine for this tool is being developed.</p>
                     </div>
-                </div>
-             `;
+                </div>`;
         }
     };
 
-    // Global Templates Registry
-    const getToolTemplate = (id) => {
-        return window.EliteTemplates[id] || `<p>UI for ${id} will be implemented soon.</p>`;
-    };
+    // expose renderCategory globally for breadcrumb clicks
+    window.renderCategory = renderCategory;
 
-    // --- Settings & Notifications Modals ---
-    window.openSettingsModal = () => document.getElementById('settingsModal').classList.add('active');
+    // ── Settings Modal ──
+    window.openSettingsModal  = () => document.getElementById('settingsModal').classList.add('active');
     window.closeSettingsModal = () => document.getElementById('settingsModal').classList.remove('active');
-    
-    window.openNotifModal = () => document.getElementById('notifModal').classList.add('active');
-    window.closeNotifModal = () => document.getElementById('notifModal').classList.remove('active');
+    window.openNotifModal     = () => document.getElementById('notifModal').classList.add('active');
+    window.closeNotifModal    = () => document.getElementById('notifModal').classList.remove('active');
 
-    // Real Customization Logic
+    // Close modal on overlay click
+    document.querySelectorAll('.modal-overlay').forEach(overlay => {
+        overlay.addEventListener('click', (e) => {
+            if (e.target === overlay) overlay.classList.remove('active');
+        });
+    });
+
+    // Theme preference (FIXED - uses 'elite_theme' key consistently)
     window.setThemePref = (mode) => {
-        if (mode === 'dark') {
-            document.documentElement.classList.add('dark');
-            localStorage.setItem('elite_theme', 'dark');
-        } else {
-            document.documentElement.classList.remove('dark');
-            localStorage.setItem('elite_theme', 'light');
-        }
+        const isDark = mode === 'dark';
+        localStorage.setItem('elite_theme', mode);
+        applyTheme(isDark);
+        if (isDark) document.documentElement.classList.add('dark');
+        else document.documentElement.classList.remove('dark');
     };
 
-    window.setAccent = (colorHex) => {
-        document.documentElement.style.setProperty('--primary', colorHex);
-        localStorage.setItem('elite_accent', colorHex);
-        // Darken for hover state
-        const darken = (hex, amount) => {
-            let color = hex.replace('#', '');
-            let num = parseInt(color, 16);
-            let r = Math.max(0, (num >> 16) - amount);
-            let g = Math.max(0, ((num >> 8) & 0x00FF) - amount);
-            let b = Math.max(0, (num & 0x0000FF) - amount);
-            return `#${(g | (b << 8) | (r << 16)).toString(16).padStart(6, '0')}`;
-        };
-        document.documentElement.style.setProperty('--primary-hover', darken(colorHex, 20));
+    // Accent color (FIXED - also updates gradient)
+    window.setAccent = (hex) => {
+        document.documentElement.style.setProperty('--primary', hex);
+        document.documentElement.style.setProperty('--primary-glow', hex + '4d');
+        document.documentElement.style.setProperty('--primary-gradient',
+            `linear-gradient(135deg, ${hex}, ${shiftHue(hex, 30)})`);
+        localStorage.setItem('elite_accent', hex);
+        // Mark active swatch
+        document.querySelectorAll('.swatch').forEach(s => {
+            s.classList.toggle('active-swatch', s.getAttribute('data-color') === hex);
+        });
     };
 
+    // Simple hue shift helper for gradient end color
+    const shiftHue = (hex, deg) => {
+        let r = parseInt(hex.slice(1,3), 16);
+        let g = parseInt(hex.slice(3,5), 16);
+        let b = parseInt(hex.slice(5,7), 16);
+
+        // Convert RGB to HSL-ish shift
+        r = Math.min(255, Math.max(0, r + (deg * 0.5)));
+        g = Math.min(255, Math.max(0, g - (deg * 0.2)));
+        b = Math.min(255, Math.max(0, b + deg));
+
+        return '#' + [r, g, b].map(v =>
+            Math.round(v).toString(16).padStart(2,'0')).join('');
+    };
+
+    // Animations toggle (FIXED)
     window.setAnimations = (val) => {
-        if(val === 'no') {
-            document.documentElement.style.setProperty('--transition', 'none');
-            localStorage.setItem('elite_anim', 'no');
-        } else {
-            document.documentElement.style.setProperty('--transition', 'all 0.3s ease');
-            localStorage.setItem('elite_anim', 'yes');
-        }
+        const t = val === 'no' ? 'none' : 'all 0.22s cubic-bezier(0.4,0,0.2,1)';
+        document.documentElement.style.setProperty('--transition', t);
+        localStorage.setItem('elite_anim', val);
     };
 
-    // Load saved settings on startup
+    // ── Load saved settings on startup ──
     const savedAccent = localStorage.getItem('elite_accent');
-    if(savedAccent) window.setAccent(savedAccent);
-    
+    if (savedAccent) window.setAccent(savedAccent);
+
     const savedAnim = localStorage.getItem('elite_anim');
-    if(savedAnim) {
+    if (savedAnim) {
         const sel = document.getElementById('settingAnim');
-        if(sel) sel.value = savedAnim;
+        if (sel) sel.value = savedAnim;
         window.setAnimations(savedAnim);
     }
 
-    // --- Init ---
+    // ── Init ──
     initTheme();
-    renderSidebar();
-    
-    // Initial Route
-    if(window.location.hash) {
-        const id = window.location.hash.replace('#', '');
-        if(getToolById(id)) {
-            renderTool(id);
-            updateActiveNav(id);
-        } else {
-            renderDashboard();
-        }
+    renderCategoryNav();
+
+    const hash = window.location.hash.replace('#', '');
+    if (hash && getToolById(hash)) {
+        renderTool(hash);
+        const cat = toolCategories.find(c => {
+            if (c.isSuite) return c.sections.some(s => s.tools.some(t => t.id === hash));
+            return c.tools.some(t => t.id === hash);
+        });
+        if (cat) setActiveTab(cat.id);
     } else {
         renderDashboard();
+        setActiveTab(null);
     }
 });
