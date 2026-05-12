@@ -138,9 +138,11 @@ document.addEventListener('DOMContentLoaded', () => {
     };
 
     // ── Render Category view (single category) ──
-    const renderCategory = (catId) => {
+    const renderCategory = (catId, push = true) => {
         const cat = toolCategories.find(c => c.id === catId);
         if (!cat) return;
+
+        if (push) history.pushState({ type: 'category', id: catId }, '', `#category-${catId}`);
 
         setBreadcrumb(`
             <span onclick="window.loadTool(null)">Home</span>
@@ -243,31 +245,46 @@ document.addEventListener('DOMContentLoaded', () => {
     };
 
     // ── Global loadTool ──
-    window.loadTool = (id) => {
+    window.loadTool = (id, push = true) => {
         searchInput.value = '';
         if (!id) {
             renderDashboard();
             setActiveTab(null);
-            window.location.hash = '';
+            if (push) history.pushState({ type: 'dashboard' }, '', 'index.html');
             // Reset SEO
-            document.title = "Elite Tools Hub - 70+ Free Professional Online Tools";
-            document.querySelector('meta[name="description"]').setAttribute("content", "Elite Tools Hub offers 70+ professional, free online tools including calculators, text processing, file converters, SEO tools, AI generators & more.");
+            document.title = "Elite Tools - 70+ Free Professional Online Tools";
             return;
         }
         renderTool(id);
-        // Activate correct category tab (Updated for Suite support)
+        const tool = getToolById(id);
+        if (tool) {
+            if (push) history.pushState({ type: 'tool', id: id }, '', `#${id}`);
+            document.title = `${tool.name} - Elite Tools`;
+        }
+
+        // Activate category tab
         const cat = toolCategories.find(c => {
             if (c.isSuite) return c.sections.some(s => s.tools.some(t => t.id === id));
             return c.tools.some(t => t.id === id);
         });
         if (cat) setActiveTab(cat.id);
-        window.location.hash = id;
+    };
 
-        // Update SEO
-        const tool = getToolById(id);
-        if (tool) {
-            document.title = `${tool.name} - Elite Tools Hub`;
-            document.querySelector('meta[name="description"]').setAttribute("content", tool.desc);
+    // Handle Browser Back Button
+    window.onpopstate = (event) => {
+        if (event.state) {
+            if (event.state.type === 'tool') {
+                window.loadTool(event.state.id, false);
+            } else if (event.state.type === 'category') {
+                renderCategory(event.state.id, false);
+            } else {
+                window.loadTool(null, false);
+            }
+        } else {
+            // Initial state or hash navigation
+            const hash = window.location.hash.replace('#', '');
+            if (hash) window.loadTool(hash, false);
+            else window.loadTool(null, false);
         }
     };
 
