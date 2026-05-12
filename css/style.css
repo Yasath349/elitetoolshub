@@ -397,6 +397,74 @@ select.form-control{cursor:pointer}
 .modal-content h2{font-family:'Outfit',sans-serif;font-size:1.2rem;font-weight:700;margin-bottom:20px;display:flex;align-items:center;gap:10px}
 .modal-content h2 i{color:var(--primary)}
 
+/* Elite File Upload Component */
+.file-upload-wrapper {
+  position: relative;
+  width: 100%;
+  padding: 40px 20px;
+  border: 2px dashed var(--border);
+  border-radius: var(--radius-lg);
+  background: var(--bg-card);
+  text-align: center;
+  transition: all 0.3s ease;
+  cursor: pointer;
+  margin-bottom: 20px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+}
+
+.file-upload-wrapper:hover, .file-upload-wrapper.dragover {
+  border-color: var(--primary);
+  background: var(--primary-glow);
+  box-shadow: 0 0 20px var(--primary-glow);
+}
+
+.file-upload-wrapper input[type="file"] {
+  position: absolute;
+  inset: 0;
+  opacity: 0;
+  cursor: pointer;
+  width: 100%;
+  height: 100%;
+}
+
+.file-upload-icon {
+  font-size: 2.5rem;
+  color: var(--primary);
+  margin-bottom: 8px;
+  transition: transform 0.3s ease;
+}
+
+.file-upload-wrapper:hover .file-upload-icon {
+  transform: translateY(-5px);
+}
+
+.file-upload-text {
+  font-family: 'Outfit', sans-serif;
+  font-weight: 600;
+  color: var(--text-1);
+  font-size: 1rem;
+}
+
+.file-upload-subtext {
+  font-size: 0.8rem;
+  color: var(--text-3);
+}
+
+.file-selected-name {
+  margin-top: 10px;
+  padding: 6px 14px;
+  background: var(--primary);
+  color: #fff;
+  border-radius: 20px;
+  font-size: 0.78rem;
+  font-weight: 600;
+  display: none;
+  animation: fadeIn 0.3s ease;
+}
+
 /* AI Loader */
 .loader-ai {
   width: 40px; height: 40px;

@@ -1,9 +1,14 @@
 window.EliteTemplates = {
     // === CONVERT PDF ===
     'pdf-to-word': `
-        <div class="form-group"><label>Select PDF File</label><input type="file" id="p2wFile" class="form-control" accept=".pdf"></div>
+        <div class="file-upload-wrapper">
+            <i class="fa-solid fa-cloud-arrow-up file-upload-icon"></i>
+            <span class="file-upload-text">Select PDF to Convert</span>
+            <span class="file-upload-subtext">Drag & drop or click to upload</span>
+            <input type="file" id="p2wFile" accept=".pdf">
+            <div id="p2wFileName" class="file-selected-name"></div>
+        </div>
         <button id="p2wBtn" class="btn-primary"><i class="fa-solid fa-file-word"></i> Convert to Word</button>
-        <div class="result-box" style="margin-top:20px; display:none;" id="p2wStatus"></div>
     `,
     'word-to-pdf': `
         <div class="form-group"><label>Select Word File (.docx)</label><input type="file" id="w2pFile" class="form-control" accept=".docx"></div>
@@ -18,7 +23,13 @@ window.EliteTemplates = {
         <button id="p2tBtn" class="btn-primary">Extract Plain Text</button>
     `,
     'jpg-to-pdf': `
-        <div class="form-group"><label>Select Images (JPG/PNG)</label><input type="file" id="jtpFiles" class="form-control" accept="image/*" multiple></div>
+        <div class="file-upload-wrapper">
+            <i class="fa-solid fa-images file-upload-icon"></i>
+            <span class="file-upload-text">Select Images (JPG/PNG)</span>
+            <span class="file-upload-subtext">Combine multiple images into one PDF</span>
+            <input type="file" id="jtpFiles" accept="image/*" multiple>
+            <div id="jtpFileName" class="file-selected-name"></div>
+        </div>
         <button id="jtpBtn" class="btn-primary">Combine to PDF</button>
     `,
     'html-to-pdf': `
@@ -28,11 +39,23 @@ window.EliteTemplates = {
 
     // === EDIT PDF ===
     'pdf-merge': `
-        <div class="form-group"><label>Select multiple PDFs</label><input type="file" id="pmFiles" class="form-control" accept=".pdf" multiple></div>
-        <button id="pmBtn" class="btn-primary"><i class="fa-solid fa-layer-group"></i> Merge PDFs</button>
+        <div class="file-upload-wrapper">
+            <i class="fa-solid fa-file-circle-plus file-upload-icon"></i>
+            <span class="file-upload-text">Select Multiple PDFs</span>
+            <span class="file-upload-subtext">Combine multiple documents into one</span>
+            <input type="file" id="pmFiles" accept=".pdf" multiple>
+            <div id="pmFileName" class="file-selected-name"></div>
+        </div>
+        <button id="pmBtn" class="btn-primary"><i class="fa-solid fa-layer-group"></i> Merge PDFs Now</button>
     `,
     'pdf-splitter': `
-        <div class="form-group"><label>Select PDF to Split</label><input type="file" id="psFile" class="form-control" accept=".pdf"></div>
+        <div class="file-upload-wrapper">
+            <i class="fa-solid fa-scissors file-upload-icon"></i>
+            <span class="file-upload-text">Select PDF to Split</span>
+            <span class="file-upload-subtext">Divide document into individual pages</span>
+            <input type="file" id="psFile" accept=".pdf">
+            <div id="psFileName" class="file-selected-name"></div>
+        </div>
         <button id="psBtn" class="btn-primary">Split Into Single Pages</button>
     `,
     'pdf-compressor': `
@@ -127,12 +150,19 @@ window.EliteTemplates = {
         </div>
         <button id="repBtn" class="btn-primary">Attempt Repair</button>
     `,
+    'basic-calc': `
+        <div class="calc-container" style="max-width:320px; margin:0 auto; background:var(--bg-header); padding:20px; border-radius:20px; border:1px solid var(--border);">
+            <input type="text" id="calcDisplay" class="form-control" readonly style="text-align:right; font-size:1.5rem; margin-bottom:15px; height:60px; background:var(--bg-app);">
+            <div class="calc-grid" style="display:grid; grid-template-columns:repeat(4,1fr); gap:10px;">
+                <button class="calc-btn btn-secondary" data-val="7">7</button><button class="calc-btn btn-secondary" data-val="8">8</button><button class="calc-btn btn-secondary" data-val="9">9</button><button class="calc-btn btn-primary" data-val="/">/</button>
+                <button class="calc-btn btn-secondary" data-val="4">4</button><button class="calc-btn btn-secondary" data-val="5">5</button><button class="calc-btn btn-secondary" data-val="6">6</button><button class="calc-btn btn-primary" data-val="*">*</button>
+                <button class="calc-btn btn-secondary" data-val="1">1</button><button class="calc-btn btn-secondary" data-val="2">2</button><button class="calc-btn btn-secondary" data-val="3">3</button><button class="calc-btn btn-primary" data-val="-">-</button>
+                <button class="calc-btn btn-secondary" data-val="0">0</button><button class="calc-btn btn-secondary" data-val=".">.</button><button class="calc-btn btn-danger" data-val="C">C</button><button class="calc-btn btn-primary" data-val="+">+</button>
+                <button class="calc-btn btn-primary" data-val="=" style="grid-column:span 4; margin-top:10px;">=</button>
+            </div>
+        </div>
+    `,
     'percentage-calc': `
-        <div class="grid-2">
-            <div>
-                <div class="form-group"><label>What is <input type="number" id="pcP1" class="form-control" style="width:80px;display:inline;"> % of <input type="number" id="pcV1" class="form-control" style="width:120px;display:inline;">?</label><button class="btn-primary" id="pcBtn1" style="margin-top:10px;">Calculate</button></div>
-                <hr style="border-color:var(--border-color);margin:20px 0;">
-                <div class="form-group"><label><input type="number" id="pcV2" class="form-control" style="width:100px;display:inline;"> is what % of <input type="number" id="pcV3" class="form-control" style="width:100px;display:inline;">?</label><button class="btn-primary" id="pcBtn2" style="margin-top:10px;">Calculate</button></div>
             </div>
             <div class="result-box">
                 <p>Result</p>

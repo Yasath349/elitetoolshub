@@ -461,9 +461,44 @@ document.addEventListener('DOMContentLoaded', () => {
         window.setAnimations(savedAnim);
     }
 
+    // ── Elite File Upload Handlers ──
+    const initFileUploads = () => {
+        const wrappers = document.querySelectorAll('.file-upload-wrapper');
+        wrappers.forEach(wrapper => {
+            const input = wrapper.querySelector('input[type="file"]');
+            const fileNameDisplay = wrapper.querySelector('.file-selected-name');
+            
+            if(!input) return;
+
+            // Handle selection change
+            input.addEventListener('change', (e) => {
+                if(input.files && input.files.length > 0) {
+                    const name = input.files.length > 1 
+                        ? `${input.files.length} files selected` 
+                        : input.files[0].name;
+                    if(fileNameDisplay) {
+                        fileNameDisplay.textContent = name;
+                        fileNameDisplay.style.display = 'inline-block';
+                    }
+                    wrapper.style.borderColor = 'var(--primary)';
+                }
+            });
+
+            // Drag and Drop visual feedback
+            wrapper.addEventListener('dragover', () => wrapper.classList.add('dragover'));
+            wrapper.addEventListener('dragleave', () => wrapper.classList.remove('dragover'));
+            wrapper.addEventListener('drop', () => wrapper.classList.remove('dragover'));
+        });
+    };
+
+    // Re-init on every tool load
+    const observer = new MutationObserver(() => initFileUploads());
+    observer.observe(contentArea, { childList: true });
+
     // ── Init ──
     initTheme();
     renderCategoryNav();
+    initFileUploads();
 
     const hash = window.location.hash.replace('#', '');
     if (hash && getToolById(hash)) {
