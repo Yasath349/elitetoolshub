@@ -154,17 +154,31 @@ document.addEventListener('DOMContentLoaded', () => {
         let html = `
             <div class="hero-section">
                 <div class="hero-content">
-                    <h2>Welcome to Elite Tools Hub</h2>
-                    <p>Your pro-level suite of utilities for daily tasks, development, and more. All tools run securely in your browser.</p>
+                    <h2>Your All-in-One Tool Suite ⚡</h2>
+                    <p>70+ professional, browser-based utilities for productivity, design, development, and daily life — all completely free.</p>
+                    <div class="hero-stats">
+                        <div class="hero-stat">
+                            <span class="stat-num">70+</span>
+                            <span class="stat-label">Free Tools</span>
+                        </div>
+                        <div class="hero-stat">
+                            <span class="stat-num">15</span>
+                            <span class="stat-label">Categories</span>
+                        </div>
+                        <div class="hero-stat">
+                            <span class="stat-num">100%</span>
+                            <span class="stat-label">Browser-Based</span>
+                        </div>
+                    </div>
                 </div>
-                <div class="hero-decor"></div>
             </div>
         `;
 
         toolCategories.forEach(category => {
             html += `
                 <div class="section-title">
-                    <i class="${category.icon.includes('youtube') ? 'fa-brands' : 'fa-solid'} ${category.icon}"></i> ${category.name}
+                    <i class="${category.icon.includes('youtube') ? 'fa-brands' : 'fa-solid'} ${category.icon}"></i>
+                    ${category.name}
                 </div>
                 <div class="tools-grid">
                     ${category.tools.map(tool => `
