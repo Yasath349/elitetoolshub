@@ -28,8 +28,8 @@ window.EliteToolEngines['percentage-calc'] = {
         const btn = document.getElementById('pcBtn');
         if(!btn) return;
         btn.onclick = () => {
-            const p = parseFloat(document.getElementById('pcPerc').value);
-            const v = parseFloat(document.getElementById('pcVal').value);
+            const p = parseFloat(document.getElementById('pcPercent').value);
+            const v = parseFloat(document.getElementById('pcValue').value);
             const res = document.getElementById('pcResult');
             if(!isNaN(p) && !isNaN(v)) {
                 res.textContent = (p/100)*v;
@@ -140,7 +140,7 @@ window.EliteToolEngines['ip-checker'] = {
 // ==========================================
 // 4. DAILY LIFE
 // ==========================================
-window.EliteToolEngines['qr-generator'] = {
+window.EliteToolEngines['qr-gen'] = {
     init: function() {
         const btn = document.getElementById('qrBtn');
         if(!btn) return;

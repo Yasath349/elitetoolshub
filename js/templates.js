@@ -98,7 +98,23 @@ window.EliteTemplates = {
         </div>
         <button id="pcBtn" class="btn-primary">Optimize & Compress</button>
     `,
-
+    'pdf-rotator': `
+        <div class="file-upload-wrapper">
+            <i class="fa-solid fa-rotate file-upload-icon"></i>
+            <span class="file-upload-text">Select PDF to Rotate</span>
+            <input type="file" id="prFile" accept=".pdf">
+            <div id="prFileName" class="file-selected-name"></div>
+        </div>
+        <div class="form-group">
+            <label>Rotation Angle</label>
+            <select id="prDeg" class="form-control">
+                <option value="90">90° Clockwise</option>
+                <option value="180">180° (Upside Down)</option>
+                <option value="270">90° Counter-Clockwise</option>
+            </select>
+        </div>
+        <button id="prBtn" class="btn-primary">Rotate & Save PDF</button>
+    `,
     'pdf-sign': `
         <div class="file-upload-wrapper">
             <i class="fa-solid fa-file-signature file-upload-icon"></i>
@@ -131,21 +147,6 @@ window.EliteTemplates = {
         </div>
         <button id="pwBtn" class="btn-primary">Add Watermark & Save</button>
     `,
-    'pdf-watermark-remover': `
-        <div class="file-upload-wrapper">
-            <i class="fa-solid fa-eraser file-upload-icon"></i>
-            <span class="file-upload-text">Select PDF to Clean</span>
-            <span class="file-upload-subtext">Attempts to remove common text watermarks</span>
-            <input type="file" id="pwrFile" accept=".pdf">
-            <div id="pwrFileName" class="file-selected-name"></div>
-        </div>
-        <div class="form-group">
-            <label>Watermark Text to Remove (Optional)</label>
-            <input type="text" id="pwrText" class="form-control" placeholder="e.g. Sample, Confidential">
-        </div>
-        <button id="pwrBtn" class="btn-primary">Remove Watermarks & Save</button>
-        <div id="pwrStatus" style="margin-top:15px; text-align:center; color:var(--text-2);"></div>
-    `,
 
     // === SECURE PDF ===
     'pdf-lock': `
@@ -175,7 +176,27 @@ window.EliteTemplates = {
         <button id="puBtn" class="btn-primary">Unlock & Remove Security</button>
     `,
 
-
+    // === SMART PDF (AI) ===
+    'pdf-ai-summary': `
+        <div class="form-group"><label>Upload PDF for AI Analysis</label><input type="file" id="aisFile" class="form-control" accept=".pdf"></div>
+        <button id="aisBtn" class="btn-primary"><i class="fa-solid fa-robot"></i> Generate AI Summary</button>
+        <div class="result-box" id="aisResult" style="margin-top:20px; min-height:100px;">
+            <p style="color:var(--text-3)">AI results will appear here...</p>
+        </div>
+    `,
+    'pdf-qa': `
+        <div class="form-group"><label>1. Upload PDF</label><input type="file" class="form-control" accept=".pdf"></div>
+        <div class="form-group" style="margin-top:20px;">
+            <label>2. Ask AI anything about this document</label>
+            <div id="qaResult" style="height:250px; overflow-y:auto; background:var(--bg-app); border:1px solid var(--border); border-radius:10px; padding:15px; margin-bottom:10px;">
+                <div style="color:var(--text-3); text-align:center; padding-top:100px;">Chat with your PDF...</div>
+            </div>
+            <div style="display:flex; gap:10px;">
+                <input type="text" id="qaInput" class="form-control" placeholder="What is the total revenue mentioned?">
+                <button id="qaBtn" class="btn-primary" style="width:auto; padding:0 20px;"><i class="fa-solid fa-paper-plane"></i></button>
+            </div>
+        </div>
+    `,
     'pdf-ocr': `
         <div class="form-group"><label>Select Scanned PDF or Image</label><input type="file" id="ocrFile" class="form-control" accept=".pdf,image/*"></div>
         <button id="ocrBtn" class="btn-primary">Perform OCR (Extract Text)</button>
@@ -226,11 +247,6 @@ window.EliteTemplates = {
         </div>
     `,
     'percentage-calc': `
-        <div class="grid-2">
-            <div>
-                <div class="form-group"><label>What is</label><input type="number" id="pcPerc" class="form-control" placeholder="10" value="10"></div>
-                <div class="form-group"><label>% of</label><input type="number" id="pcVal" class="form-control" placeholder="100" value="100"></div>
-                <button id="pcBtn" class="btn-primary">Calculate</button>
             </div>
             <div class="result-box">
                 <p>Result</p>
@@ -369,6 +385,10 @@ window.EliteTemplates = {
             </div>
         </div>
     `,
+    'pdf-merge': `
+        <div class="form-group"><label>Select multiple PDFs</label><input type="file" id="pmFiles" class="form-control" accept=".pdf" multiple></div>
+        <button id="pmBtn" class="btn-primary">Merge PDFs</button>
+        <div id="pmStatus" style="margin-top:15px;text-align:center;"></div>
     `,
 
     // === SECURITY & WEB ===
@@ -834,61 +854,5 @@ window.EliteTemplates = {
         <div class="form-group"><label>What did you dream about?</label><input type="text" id="dreamInput" class="form-control" placeholder="e.g. falling, flying, teeth..."></div>
         <button id="dreamBtn" class="btn-primary"><i class="fa-solid fa-cloud-moon"></i> Interpret</button>
         <div id="dreamResult" style="margin-top:20px; background:var(--bg-card); padding:20px;"></div>
-    `
-    `,
-    'pdf-page-remove': `
-        <div class="file-upload-wrapper">
-            <i class="fa-solid fa-file-circle-minus file-upload-icon"></i>
-            <span class="file-upload-text">Select PDF to Edit</span>
-            <input type="file" id="prFile" accept=".pdf">
-        </div>
-        <div class="form-group">
-            <label>Pages to Remove (e.g. 1, 3-5, 10)</label>
-            <input type="text" id="prPages" class="form-control" placeholder="1, 3, 5">
-        </div>
-        <button id="prBtn" class="btn-primary">Remove Pages & Download</button>
-    `,
-    'image-crop': `
-        <div class="form-group"><input type="file" id="cropFile" class="form-control" accept="image/*"></div>
-        <div class="result-box">Cropping Canvas UI (Coming soon)</div>
-        <button id="cropBtn" class="btn-primary">Crop Image</button>
-    `,
-    'insta-caption': `
-        <div class="form-group"><label>What is your post about?</label><input type="text" id="icInput" class="form-control"></div>
-        <button id="icBtn" class="btn-primary"><i class="fa-solid fa-wand-magic-sparkles"></i> Generate Caption</button>
-        <div id="icResult" style="margin-top:20px; background:var(--bg-card); padding:20px;"></div>
-    `,
-    'fb-post-gen': `
-        <div class="form-group"><label>Post Topic</label><input type="text" id="fbInput" class="form-control"></div>
-        <button id="fbBtn" class="btn-primary">Create FB Post</button>
-        <div id="fbResult" style="margin-top:20px; background:var(--bg-card); padding:20px;"></div>
-    `,
-    'tweet-gen': `
-        <div class="form-group"><label>Thread Topic</label><input type="text" id="twInput" class="form-control"></div>
-        <button id="twBtn" class="btn-primary">Generate Viral Tweet</button>
-        <div id="twResult" style="margin-top:20px; background:var(--bg-card); padding:20px;"></div>
-    `,
-    'regex-tester': `
-        <div class="form-group"><label>Regex Pattern</label><input type="text" id="rePat" class="form-control" placeholder="/^[a-z]+$/"></div>
-        <div class="form-group"><label>Test String</label><textarea id="reStr" class="form-control"></textarea></div>
-        <div id="reResult" class="result-box">Result: -</div>
-    `,
-    'keyword-dens': `
-        <div class="form-group"><label>Paste Content</label><textarea id="kdInput" class="form-control" style="height:200px;"></textarea></div>
-        <button id="kdBtn" class="btn-primary">Analyze Density</button>
-        <div id="kdResult" style="margin-top:20px;"></div>
-    `,
-    'unit-conv': `
-        <div class="grid-2">
-            <input type="number" id="ucVal" class="form-control" value="1">
-            <select id="ucType" class="form-control"><option>kg to lbs</option><option>lbs to kg</option><option>km to miles</option></select>
-        </div>
-        <button id="ucConvert" class="btn-primary" style="margin-top:15px;">Convert</button>
-        <div class="result-box"><div id="ucRes" class="result-value">-</div></div>
-    `,
-    'age-calc': `
-        <div class="form-group"><label>Date of Birth</label><input type="date" id="ageDob" class="form-control"></div>
-        <button id="ageBtn" class="btn-primary">Calculate Age</button>
-        <div class="result-box"><div id="ageResult" class="result-value">-</div></div>
     `
 };
