@@ -381,9 +381,7 @@ document.addEventListener('DOMContentLoaded', () => {
         const observer = new IntersectionObserver((entries) => {
             entries.forEach((entry, index) => {
                 if (entry.isIntersecting) {
-                    setTimeout(() => {
-                        entry.target.classList.add('show');
-                    }, index * 40); // Staggered effect
+                    entry.target.classList.add('show');
                     observer.unobserve(entry.target);
                 }
             });
