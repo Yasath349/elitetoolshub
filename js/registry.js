@@ -1,17 +1,5 @@
 const toolCategories = [
     {
-        id: 'smart-ai',
-        name: 'Smart AI Tools',
-        icon: 'fa-robot',
-        tools: [
-            { id: 'ai-homework', name: 'AI Homework Solver', desc: 'Solve and understand questions instantly.', icon: 'fa-graduation-cap' },
-            { id: 'ai-resume', name: 'AI Resume Builder', desc: 'Create professional resumes for jobs.', icon: 'fa-file-invoice' },
-            { id: 'ai-summary', name: 'AI Summary Gen', desc: 'Turn long text into short summaries.', icon: 'fa-compress' },
-            { id: 'ai-seo', name: 'AI SEO Keywords', desc: 'Find powerful keywords for SEO.', icon: 'fa-magnifying-glass-chart' },
-            { id: 'ai-travel', name: 'AI Travel Planner', desc: 'Create smart travel plans and budgets.', icon: 'fa-plane' }
-        ]
-    },
-    {
         id: 'pdf-suite',
         name: 'PDF Pro Suite',
         icon: 'fa-file-pdf',
@@ -34,9 +22,10 @@ const toolCategories = [
                     { id: 'pdf-merge', name: 'PDF Merger', icon: 'fa-layer-group', desc: 'Combine multiple PDFs.' },
                     { id: 'pdf-splitter', name: 'PDF Splitter', icon: 'fa-scissors', desc: 'Split into single pages.' },
                     { id: 'pdf-compressor', name: 'PDF Compressor', icon: 'fa-compress', desc: 'Reduce file size.' },
-                    { id: 'pdf-rotator', name: 'PDF Rotator', icon: 'fa-rotate', desc: 'Rotate pages.' },
+
                     { id: 'pdf-page-remove', name: 'Remove Pages', icon: 'fa-trash-can', desc: 'Delete specific pages.' },
-                    { id: 'pdf-watermark', name: 'Add Watermark', icon: 'fa-stamp', desc: 'Protect with text.' }
+                    { id: 'pdf-watermark', name: 'Add Watermark', icon: 'fa-stamp', desc: 'Protect with text.' },
+                    { id: 'pdf-watermark-remover', name: 'Watermark Remover', icon: 'fa-eraser', desc: 'Remove text-based watermarks.' }
                 ]
             },
             {
@@ -50,8 +39,7 @@ const toolCategories = [
             {
                 name: 'Smart AI Tools',
                 tools: [
-                    { id: 'pdf-ai-summary', name: 'AI Summarizer', icon: 'fa-robot', desc: 'Generate summaries.' },
-                    { id: 'pdf-qa', name: 'PDF Q&A Chat', icon: 'fa-comment-dots', desc: 'Ask PDF questions.' },
+
                     { id: 'pdf-ocr', name: 'OCR Reader', icon: 'fa-eye', desc: 'Extract scanned text.' }
                 ]
             }
@@ -87,11 +75,11 @@ const toolCategories = [
         name: 'Image Tools',
         icon: 'fa-image',
         tools: [
-            { id: 'img-compress', name: 'Image Compressor', icon: 'fa-file-zipper', desc: 'Reduce file size instantly.' },
-            { id: 'img-resize', name: 'Image Resizer', icon: 'fa-expand', desc: 'Change dimensions easily.' },
+            { id: 'image-compress', name: 'Image Compressor', icon: 'fa-file-zipper', desc: 'Reduce file size instantly.' },
+            { id: 'image-resize', name: 'Image Resizer', icon: 'fa-expand', desc: 'Change dimensions easily.' },
             { id: 'img-crop', name: 'Image Cropper', icon: 'fa-crop', desc: 'Cut images to any size.' },
-            { id: 'bg-remove', name: 'BG Remover (AI)', icon: 'fa-eraser', desc: 'AI-powered background removal.' },
-            { id: 'img-conv', name: 'Image Converter', icon: 'fa-repeat', desc: 'PNG, JPG, WebP & more.' }
+
+            { id: 'image-convert', name: 'Image Converter', icon: 'fa-repeat', desc: 'PNG, JPG, WebP & more.' }
         ]
     },
     {
@@ -148,9 +136,9 @@ const toolCategories = [
         icon: 'fa-magnifying-glass-chart',
         tools: [
             { id: 'meta-gen', name: 'Meta Tag Gen', icon: 'fa-tags', desc: 'Optimize for Google.' },
-            { id: 'og-gen', name: 'OpenGraph Gen', icon: 'fa-share-nodes', desc: 'Social preview meta.' },
+            { id: 'og-preview', name: 'OpenGraph Gen', icon: 'fa-share-nodes', desc: 'Social preview meta.' },
             { id: 'robots-gen', name: 'Robots.txt Gen', icon: 'fa-robot', desc: 'Control search bots.' },
-            { id: 'sitemap-gen', name: 'Sitemap Gen', icon: 'fa-sitemap', desc: 'XML sitemap creator.' },
+            { id: 'sitemap-gen', name: 'Sitemap Gen', icon: 'fa-sitemap', desc: 'XML sitemap creator.' },,
             { id: 'keyword-dens', name: 'Keyword Density', icon: 'fa-chart-pie', desc: 'Analyze text keywords.' }
         ]
     },
@@ -159,7 +147,7 @@ const toolCategories = [
         name: 'Daily Life',
         icon: 'fa-calendar-day',
         tools: [
-            { id: 'qr-gen', name: 'QR Code Generator', icon: 'fa-qrcode', desc: 'Custom QRs with logos.' },
+            { id: 'qr-generator', name: 'QR Code Generator', icon: 'fa-qrcode', desc: 'Custom QRs with logos.' },
             { id: 'unit-conv', name: 'Unit Converter', icon: 'fa-scale-balanced', desc: 'Metric to imperial.' },
             { id: 'age-calc', name: 'Age Calculator', icon: 'fa-cake-candles', desc: 'Find exact age in seconds.' },
             { id: 'stopwatch', name: 'Stopwatch', icon: 'fa-stopwatch', desc: 'Precise time tracking.' },

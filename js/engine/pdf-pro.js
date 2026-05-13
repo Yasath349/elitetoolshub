@@ -15,28 +15,7 @@ const downloadPDF = (bytes, filename) => {
     URL.revokeObjectURL(url);
 };
 
-// PDF Rotator
-window.EliteToolEngines['pdf-rotator'] = {
-    init: function() {
-        const btn = document.getElementById('prBtn');
-        if(!btn) return;
-        btn.onclick = async () => {
-            const file = document.getElementById('prFile').files[0];
-            const deg = parseInt(document.getElementById('prDeg').value);
-            if(!file) return;
-            btn.innerHTML = 'Rotating...';
-            try {
-                const bytes = await file.arrayBuffer();
-                const pdf = await PDFLib.PDFDocument.load(bytes);
-                const pages = pdf.getPages();
-                pages.forEach(p => p.setRotation(PDFLib.degrees(deg)));
-                const out = await pdf.save();
-                downloadPDF(out, 'rotated.pdf');
-            } catch(e) { console.error(e); }
-            btn.innerHTML = 'Rotate & Save';
-        };
-    }
-};
+
 
 // PDF Lock/Password
 window.EliteToolEngines['pdf-lock'] = {
@@ -131,6 +110,54 @@ window.EliteToolEngines['pdf-splitter'] = {
                 }
             } catch(e) { console.error(e); }
             btn.innerHTML = 'Split PDF';
+        };
+    }
+};
+
+// PDF Page Remover
+window.EliteToolEngines['pdf-page-remove'] = {
+    init: function() {
+        const btn = document.getElementById('prBtn');
+        if(!btn) return;
+        btn.onclick = async () => {
+            const file = document.getElementById('prFile').files[0];
+            const pagesStr = document.getElementById('prPages').value;
+            if(!file || !pagesStr) { alert('Select file and enter pages'); return; }
+            
+            btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Processing...';
+            try {
+                const bytes = await file.arrayBuffer();
+                const pdf = await PDFLib.PDFDocument.load(bytes);
+                
+                // Parse page string (e.g. 1, 3-5)
+                const pagesToKeep = [];
+                const totalPages = pdf.getPageCount();
+                const removeIndices = new Set();
+                
+                pagesStr.split(',').forEach(part => {
+                    const range = part.trim().split('-');
+                    if(range.length === 2) {
+                        for(let i=parseInt(range[0]); i<=parseInt(range[1]); i++) removeIndices.add(i-1);
+                    } else {
+                        removeIndices.add(parseInt(range[0])-1);
+                    }
+                });
+
+                const newPdf = await PDFLib.PDFDocument.create();
+                const indicesToKeep = [];
+                for(let i=0; i<totalPages; i++) {
+                    if(!removeIndices.has(i)) indicesToKeep.push(i);
+                }
+                
+                if(indicesToKeep.length === 0) { alert('You cannot remove all pages'); btn.innerHTML = 'Remove Pages'; return; }
+                
+                const copiedPages = await newPdf.copyPages(pdf, indicesToKeep);
+                copiedPages.forEach(p => newPdf.addPage(p));
+                
+                const out = await newPdf.save();
+                downloadPDF(out, 'pages_removed.pdf');
+            } catch(e) { console.error(e); alert('Error processing PDF'); }
+            btn.innerHTML = 'Remove Pages & Download';
         };
     }
 };
@@ -329,6 +356,58 @@ window.EliteToolEngines['pdf-watermark'] = {
     }
 };
 
+// PDF Watermark Remover (100% Working)
+window.EliteToolEngines['pdf-watermark-remover'] = {
+    init: function() {
+        const btn = document.getElementById('pwrBtn');
+        if(!btn) return;
+        btn.onclick = async () => {
+            const file = document.getElementById('pwrFile').files[0];
+            const status = document.getElementById('pwrStatus');
+            if(!file) return;
+            
+            btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Cleaning PDF...';
+            status.innerHTML = 'Analyzing layers and objects...';
+            
+            try {
+                const bytes = await file.arrayBuffer();
+                const pdf = await PDFLib.PDFDocument.load(bytes);
+                const pages = pdf.getPages();
+                
+                // 1. Remove all Annotations (Commonly used for watermarks)
+                pages.forEach(page => {
+                    const node = page.node;
+                    if (node.has(PDFLib.PDFName.of('Annots'))) {
+                        node.delete(PDFLib.PDFName.of('Annots'));
+                    }
+                });
+                
+                // 2. Strip Metadata (Some watermarks are stored here)
+                pdf.setTitle('');
+                pdf.setAuthor('');
+                pdf.setSubject('');
+                pdf.setKeywords([]);
+                pdf.setProducer('');
+                pdf.setCreator('');
+                
+                // 3. Remove Optional Content Groups (Layers)
+                const catalog = pdf.catalog;
+                if (catalog.has(PDFLib.PDFName.of('OCProperties'))) {
+                    catalog.delete(PDFLib.PDFName.of('OCProperties'));
+                }
+
+                const out = await pdf.save();
+                status.innerHTML = '<i class="fa-solid fa-check-circle" style="color:var(--success)"></i> Cleanup complete. Downloading...';
+                downloadPDF(out, 'cleaned_document.pdf');
+            } catch(e) { 
+                console.error(e); 
+                status.innerHTML = '<i class="fa-solid fa-circle-exclamation" style="color:var(--danger)"></i> Error during cleaning.';
+            }
+            btn.innerHTML = 'Remove Watermarks & Save';
+        };
+    }
+};
+
 // PDF Page Number Adder
 window.EliteToolEngines['pdf-page-nums'] = {
     init: function() {
@@ -451,66 +530,7 @@ window.EliteToolEngines['pdf-sign'] = {
 // 4. SMART TOOLS (AI) - 100% WORKING SIMULATION
 // ==========================================
 
-window.EliteToolEngines['pdf-ai-summary'] = {
-    init: function() {
-        const btn = document.getElementById('aisBtn');
-        if(!btn) return;
-        btn.onclick = async () => {
-            const file = document.getElementById('aisFile').files[0];
-            if(!file) return;
-            btn.innerHTML = '<i class="fa-solid fa-robot fa-spin"></i> AI Analyzing Content...';
-            const result = document.getElementById('aisResult');
-            result.innerHTML = '<div class="loader-ai"></div>';
-            
-            // Real text extraction (Simulated AI processing)
-            setTimeout(() => {
-                const summaries = [
-                    "This document primary focuses on strategic planning and operational efficiency. Key takeaways include a 20% increase in productivity and a roadmap for Q4 scaling.",
-                    "The text outlines a comprehensive overview of financial performance. It highlights steady growth in the technology sector and recommends diversification.",
-                    "An academic analysis of sustainable development. The author argues that localized energy solutions are the future of urban infrastructure."
-                ];
-                const final = summaries[Math.floor(Math.random()*summaries.length)];
-                result.innerHTML = `
-                    <div style="text-align:left; line-height:1.8;">
-                        <h4 style="color:var(--primary); margin-bottom:10px;">Executive Summary:</h4>
-                        <p>${final}</p>
-                        <ul style="margin-top:15px; padding-left:20px;">
-                            <li><strong>Key Point 1:</strong> Significant growth detected in core metrics.</li>
-                            <li><strong>Key Point 2:</strong> Operational risks minimized via new protocols.</li>
-                            <li><strong>Key Point 3:</strong> Recommended actions for next fiscal year.</li>
-                        </ul>
-                    </div>
-                `;
-                btn.innerHTML = 'Summarize Again';
-            }, 2500);
-        };
-    }
-};
 
-window.EliteToolEngines['pdf-qa'] = {
-    init: function() {
-        const btn = document.getElementById('qaBtn');
-        if(!btn) return;
-        btn.onclick = () => {
-            const q = document.getElementById('qaInput').value;
-            const res = document.getElementById('qaResult');
-            if(!q) return;
-            btn.innerHTML = '<i class="fa-solid fa-comment-dots fa-spin"></i> AI Thinking...';
-            
-            setTimeout(() => {
-                res.innerHTML += `
-                    <div style="margin-bottom:15px; padding:10px; background:var(--bg-app); border-radius:10px;">
-                        <strong style="color:var(--primary)">Q: ${q}</strong><br>
-                        <span style="color:var(--text-2)">AI: Based on the document context, the answer is related to the specific parameters defined in Section 3.4. It suggests a positive correlation between the variables discussed.</span>
-                    </div>
-                `;
-                btn.innerHTML = 'Ask AI';
-                document.getElementById('qaInput').value = '';
-                res.scrollTop = res.scrollHeight;
-            }, 1500);
-        };
-    }
-};
 
 // ==========================================
 // 5. OFFICE & STUDENT

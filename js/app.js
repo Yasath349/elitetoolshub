@@ -117,6 +117,9 @@ document.addEventListener('DOMContentLoaded', () => {
                 mobileDrawerNav.appendChild(btn);
             });
         });
+        
+        // Staggered entrance for sidebar/nav
+        setTimeout(animateCards, 100);
     };
 
     const setActiveTab = (catId) => {
@@ -198,6 +201,9 @@ document.addEventListener('DOMContentLoaded', () => {
                 </div>
             `;
         }
+        
+        // Trigger card animations
+        setTimeout(animateCards, 50);
     };
 
     // ── Search ──
@@ -231,6 +237,9 @@ document.addEventListener('DOMContentLoaded', () => {
                 </div>
             </div>
         `;
+        
+        // Trigger card animations
+        setTimeout(animateCards, 50);
     });
 
     // ── Breadcrumb helper ──
@@ -259,7 +268,8 @@ document.addEventListener('DOMContentLoaded', () => {
         const tool = getToolById(id);
         if (tool) {
             if (push) history.pushState({ type: 'tool', id: id }, '', `#${id}`);
-            document.title = `${tool.name} - Elite Tools`;
+            document.title = `${tool.name} | Elite Tools - Professional Online Suite`;
+            updateMetaDescription(tool.desc);
         }
 
         // Activate category tab
@@ -362,6 +372,35 @@ document.addEventListener('DOMContentLoaded', () => {
         });
 
         contentArea.innerHTML = html;
+        setTimeout(animateCards, 100);
+    };
+
+    // ── Next-Level Animations ──
+    const animateCards = () => {
+        const cards = document.querySelectorAll('.tool-card');
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach((entry, index) => {
+                if (entry.isIntersecting) {
+                    setTimeout(() => {
+                        entry.target.classList.add('show');
+                    }, index * 40); // Staggered effect
+                    observer.unobserve(entry.target);
+                }
+            });
+        }, { threshold: 0.1 });
+
+        cards.forEach(card => observer.observe(card));
+    };
+
+    // ── SEO Management ──
+    const updateMetaDescription = (desc) => {
+        let meta = document.querySelector('meta[name="description"]');
+        if (!meta) {
+            meta = document.createElement('meta');
+            meta.name = "description";
+            document.head.appendChild(meta);
+        }
+        meta.setAttribute('content', desc + " - Part of Elite Tools, the all-in-one professional utility suite.");
     };
 
     // ── Render Tool ──
